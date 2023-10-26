@@ -1,0 +1,73 @@
+<body>
+    <div class="card">
+        <h1>Criar Orçamento</h1>
+
+        <form class="form" id="formCriarOrcamento">
+            <div class="input-field">
+                <input type="text" name="nome" required>
+                <label>Nome*</label>
+            </div>
+
+            <div class="input-field">
+                <textarea name="descricao" rows="5" required></textarea>
+                <label>Descrição</label>
+            </div>
+
+            <div class="input-field">
+                <select name="estado" required>
+                    <option value=""></option>
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+                </select>
+                <label>UF da base SINAPI*</label>
+            </div>
+
+            <div class="input-field">
+                <select name="mesSINAPI" required>
+                    <option value=""></option>
+                    <option value="09/10">09/10</option>
+                </select>
+                <label>Mês da base SINAPI*</label>
+            </div>
+
+            <div class="input-field">
+                <input type="text" name="bdi" required>
+                <label>BDI</label>
+            </div>
+            
+            <div id="encargo">
+                <span value="0" selected>Não Desonerado</span>
+                <span value="1">Desonerado</span>
+            </div>
+
+            <button type="button" id="criarOrcamento" class="btn btn-primary">Criar</button>
+
+        </form>
+
+    </div>
+</body>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* variáreis de cor */
+        :root {
+            --success: #b1ffb1;
+            --success-dark: #005700;
+            --danger: #ffb1ab;
+            --danger-dark: #570000;
+            --warning: #fffbb1;
+            --info: #b1ffff;
+            --info-dark: #005757;
+        }        
+
+        #container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: self-end;
+        }
+
+        .info {
+            width: 300px;
+            background-color: var(--info);
+            padding: 15px;
+            margin: 10px 10px 0 0;
+            border-radius: 5px;
+            border: 1px solid var(--info-dark);          
+            display: flex;
+            justify-content: space-between;
+
+            position: relative;
+        }
+        .info > button {
+            background-color: transparent;
+            border: none;
+            color: var(--info-dark);
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            position: sticky;
+            right: 5px;
+        }
+
+        .info:before {
+            content: "";
+            height: 5px;
+            width: 100%;
+            background-color: var(--info-dark);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            animation: progress 2s linear;
+            animation-fill-mode: forwards;
+        }
+
+        .info:hover:before {
+            /* no hover, pausar a animação */
+            animation-play-state: paused;
+            animation: none;
+        }
+
+        .danger {
+            background-color: var(--danger);
+            border: 1px solid var(--danger-dark);
+            
+        }
+        .danger > button {
+            color: var(--danger-dark);
+        }
+        .danger:before {
+            background-color: var(--danger-dark);
+        }
+
+        @keyframes progress {
+            to {
+                width: 0%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="container">
+
+        <div class="info success">
+            <span>Informação aqui! mas agora tem muita informação aquiiiiiiiii iiiiiiiiiii iiiiiiiiiiiiiiiiiiiiii iiiiiiiiiiiiiiiiiiiiii iiiiiiiiiiiiiiiii</span>
+            <Button>X</Button>
+        </div>
+
+        <div class="info danger">
+            <span>Informação ruim!</span>
+            <button>X</button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

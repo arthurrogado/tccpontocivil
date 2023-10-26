@@ -1,0 +1,65 @@
+/* #pessoas {
+    width: 100%;
+    height: 100%;
+} */
+
+#tablePessoas {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+#tablePessoas th {
+    border: 1px solid black;
+    padding: 5px;
+    background: #0c028d;
+    color: white;
+}
+
+#tablePessoas tbody tr:nth-child(even) {
+    background: #f4f1ff;
+}
+
+#tablePessoas tbody tr:nth-child(odd) {
+    background: #d6dbfd;
+}
+
+#tablePessoas tbody tr:hover {
+    background: #b3b9ff;
+}
+
+#tablePessoas td {
+    border: 1px solid black;
+    padding: 5px;
+    text-align: center;
+}
+
+/* criar animação de carregamento só com css, tipo um circulo girando */
+
+#loading {
+    width: 100%;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#loading::after {
+    content: "";
+    width: 50px;
+    height: 50px;
+    border: 5px solid #0c028d;
+    border-radius: 50%;
+    border-top: 5px solid transparent;
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="http://localhost:8080/css/sobreNos.css"> -->
+</head>
+
+<section>
+
+    <h2>SOBRE NÓS</h2>
+    <button id="alertar">Alertar</button>
+
+    <?php foreach($this->view->data as $info): ?>
+    <div class="info">
+        <h3><?= $info['titulo'] ?></h3>
+        <p><?= $info['descricao'] ?></p>
+    </div>
+    <?php endforeach; ?>
+
+
+</section>
+
+</html>
+
+<script type="module" src="./js/sobreNos.js"></script>
+
+<!-- <script>
+    document.querySelector('#alertar').addEventListener('click', () => {
+        alert('Olá, Mundo!');
+    });
+</script> -->

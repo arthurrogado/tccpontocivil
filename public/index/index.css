@@ -1,0 +1,101 @@
+:root {
+    --success-color: #07aa3e;
+    --danger-color: #8d0a0a;
+
+    /* 
+    make color based on primary color, just change the hue
+    */
+    --hue: 244;
+    --primary-color: hsl(var(--hue), 100%, 25%);
+    --secondary-color: hsl(var(--hue), 100%, 40%);
+    --tertiary-color: hsl(var(--hue), 100%, 55%);
+
+    --dark-color-1: hsl(var(--hue), 100%, 20%);
+    --dark-color-2: hsl(var(--hue), 100%, 15%);
+    --dark-color-3: hsl(var(--hue), 100%, 10%);
+
+    --light-color-1: hsl(var(--hue), 100%, 80%);
+    --light-color-2: hsl(var(--hue), 100%, 85%);
+    --light-color-3: hsl(var(--hue), 100%, 90%);
+    --light-color-4: hsl(var(--hue), 100%, 98%);
+
+    --neutral-color-1: hsl(var(--hue), 10%, 80%);
+    --neutral-color-2: hsl(var(--hue), 10%, 60%);
+    --neutral-color-3: hsl(var(--hue), 10%, 40%);
+
+    --yellow-color: hsl(44, 84%, 35%);
+    --blue-color: hsl(244, 84%, 35%);
+    --green-color: hsl(144, 84%, 35%);
+
+}
+
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2rem;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header {
+    background: var(--primary-color);
+    color: white;
+    font-size: 2rem;
+    padding: 10px;
+}
+
+#content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    border: 1px solid blue;
+}
+
+
+nav {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    border: 1px solid green;
+    min-width: 150px;
+}
+
+nav .nav-item {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+nav .nav-item:hover {
+    background: var(--tertiary-color);
+    cursor: pointer;
+}
+
+
+main {
+    background: #e6e6e6;
+    width: 100%;
+    margin: 0 20px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main section {
+    width: 100%;
+    height: 100%;
+}

@@ -1,0 +1,532 @@
+
+/* COMPONENTES */
+
+/* .info {
+    padding: 20px 0;
+    border-radius: 10px;
+    background: #c7c3ff;
+    border: 1px solid #0c028d;
+} */
+
+
+@import url();
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+
+.border {
+    border: 1px solid red;
+}
+
+/* CLASSES COMUNS */
+
+.center {
+    text-align: center;
+}
+
+.title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    border-radius: 1rem;
+}
+.title > h1 {
+    flex-basis: 100%;
+}
+
+.section {
+    padding: 10px;
+    margin: 40px 0px 0px 0px;
+    background-color: #eee;
+    border-top: #969696 2px solid;
+    border-bottom: #969696 2px solid;
+}
+
+/* -------------- */
+
+
+
+
+button, input[type="button"], input[type="submit"], input[type="reset"], select {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    outline: inherit;
+}
+
+input[type="submit"] {
+    background-color: rgb(10, 107, 172);
+    color: white;
+    padding: 10px;
+    display: block;
+    width: 94%;
+    margin: auto;
+    border-radius: 6px;
+}
+
+input[type='text'], textarea {
+    padding: 8px;
+}
+
+iframe {
+    width: 100%;
+    height: calc(100vh - 100px);
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form > * {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+/* os filhos diretos do input-group */
+.form > * > * {
+    flex-basis: 100%;
+    margin: 5px 0;
+}
+
+@media (max-width:768px) {
+    .form > * {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    .form {
+        flex-wrap: wrap;
+    }
+
+    .form > * {
+        flex-basis: 100%;
+    }
+}
+
+
+
+
+
+
+.input-field {
+    position: relative;
+    padding: 10px;
+}
+
+/* placeholder */
+.input-field label {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    opacity: .5;
+    pointer-events: none;
+    transition: .3s;
+}
+
+.input-field input, select, textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    border-radius: 6px;
+    height: 2.5rem;
+}
+.input-field input {
+    height: 2.5rem;
+}
+
+.input-field input select option {
+    width: 100%;
+    height: 2.5rem;
+}
+
+.input-field textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.ativado label,
+.input-field input:disabled ~ label,
+.input-field input:valid ~ label,
+.input-field input:focus ~ label,
+.input-field input:read-only ~ label,
+.input-field textarea:disabled ~ label,
+.input-field textarea:valid ~ label,
+.input-field textarea:focus ~ label,
+.input-field select:disabled ~ label,
+.input-field select:valid ~ label,
+.input-field select:focus ~ label {
+    bottom: 50px;
+    font-size: 0.9em;
+    color: blue;
+    transform: translateY(-25px);
+    opacity: 1;
+}
+
+/* Error */
+.input-field.error input,
+.input-field.error textarea,
+.input-field.error select {
+    border-color: red;
+}
+
+.hidden-id {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* TABELAS */
+
+.dataTable, .detailTable {
+    width: 100%;
+    text-align: center;
+}
+
+.dataTable thead, .detailTable thead {
+    background-color: blue;
+    color: white;
+}
+
+.dataTable tr {
+    height: 2rem;
+}
+
+.dataTable tr:nth-child(2n) {
+    background-color: #ccc;
+}
+
+/* SEARCH BAR */
+.search {
+    width: 100%;
+    margin: 0;
+}
+
+.search > input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+
+.detailTable  {
+    display: flex;
+    border-collapse: collapse;
+}
+.detailTable thead , .detailTable tbody  {
+    display: flex;
+}
+.detailTable thead th, .detailTable tbody td {
+    display: flex;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+.listTable {
+    background-color: rgb(23, 59, 138);
+    border-radius: 10px;
+    width: 90%;
+    margin: 10px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: white;
+    transition: all .3s ease-in-out ;
+    transform: scaleY(0);
+    overflow: hidden;
+    height: 0px;
+}
+.listTable.open {
+    height: auto;
+    transform: scaleY(1);
+}
+.listTable input[type='text'] {
+    width: 100%;
+    height: 2.5rem;
+    border: 1px solid #2f00ff;
+    border-radius: 10px 10px 0px 0px;
+    padding: 0 10px;
+    font-size: 1rem;
+    outline: none;
+}
+.listTable ul {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+}
+.listTable li {
+    box-sizing: border-box;
+    margin: 0px;
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    transition: .3s;
+}
+.listTable li:hover {
+    background-color: #00000028;
+}
+.listTable li:last-child {
+    border-bottom: none;
+}
+#closelistTable {
+    width: 100%;
+    margin: auto;
+    color: #ff5f5f;
+    border: 1px solid #ff5f5f;
+    border-radius: 0px 0px 10px 10px;
+    line-height: 1.4rem;
+}
+
+
+
+
+
+
+
+/* BUTTONS */
+
+.btn {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    transition: .3s;
+    align-items: center;
+    justify-content: center;
+}
+.btn:hover {
+    opacity: .8;
+}
+.btn-danger {
+    background-color: #ff5f5f;
+}
+.btn-primary {
+    background-color: var(--primary-color);
+}
+.btn-gray {
+    background-color: gray;
+}
+
+
+.outlineButton { 
+    width: 100%;
+    height: 2.5rem;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #047c91;
+    border: 1px solid #047c91;
+    border-radius: 10px;
+    transition: .3s;
+}
+.outlineButton:hover {
+    background-color: #047c91;
+    color: white;
+}
+
+.circleButton {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    transition: .3s;
+    align-items: center;
+    justify-content: center;
+}
+.circleButton > span {
+    display: none;
+}
+
+/* Botoes do visualizar */
+.botoesEdicao {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    margin: 10px auto;
+    padding: 0 10px;
+}
+
+
+.link {
+    text-decoration: none;
+    transition: .3s;
+    cursor: pointer;
+}
+.link:hover {
+    color: #047c91;
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+/* =================================================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.listData {
+    width: 100%;
+    margin: 1rem auto;
+    padding: 10px;
+}
+.listData > li {
+    width: 100%;
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    transition: .3s;
+    color: black;
+    font-weight: 600;
+}
+.listData > li:hover {
+    background-color: #00000028;
+}
+
+.listData > input {
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    box-shadow: 0px 10px 10px #ccc;
+}
+
+
+/* Botão adicionar canto tela redondo */
+.add {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #047c91;
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+
+
+/* MESSAGE BOX */
+.message-box {
+    position: fixed;
+    bottom: 100px;
+    left: 0;
+    width: calc(100% - 10px);
+    margin: auto 5px;
+    height: 50px;
+    color: white;
+    background-color: #047c91b6;
+    font-weight: 600;
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+.message-box.success {
+    background-color: #098b34ad;
+}
+.message-box.error {
+    background-color: #cc2323ad;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: rgb(255, 105, 105);
+    background-color: rgba(255, 255, 255, 0.185);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+
+
+/* Separador em CARD */
+
+.card {
+    width: 90%;
+    border-radius: 2rem;
+    box-shadow: 0px 10px 10px #ccc;
+    background-color: #f1f1f1;
+    padding: 15px 20px;
+    margin: 20px auto;
+}

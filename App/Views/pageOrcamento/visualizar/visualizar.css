@@ -1,0 +1,122 @@
+#cabecalhoOrcamento {
+    width: 100%;
+    height: 10rem;
+    display: flex;
+    flex-direction: row;
+}
+#iconeCabecalho {
+    height: 100%;
+    width: 10rem;
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#corpoCabecalho {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+
+#detalhes {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: var(--neutral-color-1);
+}
+
+#acoesOrcamento {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+#acoesOrcamento > div {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    border-radius: .5rem;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    border: 1px solid var(--dark-color-3);
+    color: white;
+    cursor: pointer;
+    transition: .2s;
+}
+#acoesOrcamento > div:hover {
+    filter: brightness(1.2);
+}
+
+#acoesOrcamento > div > i {
+    font-size: 2rem;
+}
+
+#addEtapa {
+    background: var(--primary-color);
+}
+#addComposicao {
+    background: var(--secondary-color);
+}
+#addInsumo {
+    background: var(--tertiary-color);
+}
+
+
+
+#informacoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--neutral-color-1);
+}
+
+#informacoes table {
+    /* 
+    invert the table's rows and columns
+    */
+
+    border-collapse: collapse;
+    width: 100%;
+}
+#informacoes table th, #informacoes table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--dark-color-3);
+    text-align: center;
+}
+
+
+
+#orcamento {
+    margin-top: 4rem;
+}
+
+#tableOrcamento {
+    width: 100%;
+    border-collapse: collapse;
+}
+#tableOrcamento th, #tableOrcamento td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--dark-color-3);
+    text-align: center;
+}
+#tableOrcamento thead {
+    background: var(--secondary-color);
+    color: var(--light-color-4);
+}
+
+[section] {
+    background-color: var(--neutral-color-1);
+}

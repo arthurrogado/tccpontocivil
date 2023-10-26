@@ -1,0 +1,14 @@
+h2 {
+  color: red;
+  font-size: 3rem;
+}
+
+#frame {
+  border: 1px solid black;
+}
+
+#alertar {
+  padding: 10px 20px;
+  background: linear-gradient(to bottom, #ca0a0a 0%, #e0a5a5 100%);
+  color: white;
+}

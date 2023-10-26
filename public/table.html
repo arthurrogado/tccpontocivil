@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    main {
+      width: 500px;
+      padding: 2rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      border-radius: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background-color: #10428d;
+      color: white;
+    }
+
+    th,
+    td {
+      text-align: center;
+      padding: 1rem;
+      border-bottom: 1px solid #ccc;
+      transition: all 0.2s ease-in-out;
+    }
+
+
+    tr {
+      transition: all 0.2s ease-in-out;
+    }
+    tr.hidden {
+      display: none;
+    }
+
+
+    .section {
+      background-color: #bbbbbb;
+    }
+
+
+  </style>
+
+</head>
+
+<body>
+
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Idade</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr class="section" section="1">
+          <td>SEÇÃO 1</td>
+          <td></td>
+        </tr>
+        <tr from-section="1">
+          <td>João</td>
+          <td>20</td>
+        </tr>
+        <tr from-section="1">
+          <td>Maria</td>
+          <td>25</td>
+        </tr>
+
+        <tr class="section" section="2">
+          <td>SEÇÃO 2</td>
+          <td></td>
+        </tr>
+        <tr from-section="2">
+          <td>Antônio</td>
+          <td>12</td>
+        </tr>
+        <tr from-section="2">
+          <td>Isabella</td>
+          <td>18</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </main>
+
+</body>
+
+</html>
+
+<script>
+  
+  const sections = document.querySelectorAll('tr.section');
+  sections.forEach(section => {
+    // ao clicar em uma seção, esconde ou mostra os itens da seção
+    section.addEventListener('click', () => {
+      const sectionNumber = section.getAttribute('section');
+      const items = document.querySelectorAll(`tr[from-section="${sectionNumber}"]`);
+      items.forEach(item => {
+        item.classList.toggle('hidden');
+      })
+    })
+  })
+
+</script>

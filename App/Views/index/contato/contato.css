@@ -1,0 +1,6 @@
+h1 {
+    color: white;
+    /* add gradient to text */
+    background: linear-gradient(to right, #00d2ff, #3a7bd5);
+    text-align: center;
+}
