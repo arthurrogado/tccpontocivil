@@ -146,7 +146,7 @@ class HttpClient {
 
     makeRequest(url, data = {}) {
         let method = data == {} ? 'GET' : 'POST'
-        
+
         // if data is already a FormData, do nothing
         if(data instanceof FormData) {} else {
             let formdata = new FormData()
@@ -161,11 +161,18 @@ class HttpClient {
             body: data ? data : null
         }
 
+
         url = '/api' + url
 
         // tentar retornar a response em json, se não der certo, retorna em texto
         return fetch(url, options)
-            .then(response => response.json())
+            .then(response => response.text())
+            .then(response => {
+                console.log('TEXT response: ')
+                console.log(response)
+                return response
+            })
+            .then(response => JSON.parse(response))
             .then(response => {
                 console.log('response: ')
                 console.log(response)
@@ -192,18 +199,18 @@ class HttpClient {
                 console.log('error: ')
                 console.log(error)
                 
-                // se não der certo o json, tenta retornar o texto
-                return fetch(url, options)
-                    .then(response => response.text())
-                    .then(response => {
-                        console.log('response: ')
-                        console.log(response)
-                        return response
-                    })
-                    .catch(error => {
-                        console.log('error: ')
-                        console.log(error)
-                    })
+                // // se não der certo o json, tenta retornar o texto
+                // return fetch(url, options)
+                //     .then(response => response.text())
+                //     .then(response => {
+                //         console.log('response: ')
+                //         console.log(response)
+                //         return response
+                //     })
+                //     .catch(error => {
+                //         console.log('error: ')
+                //         console.log(error)
+                //     })
             })
     }
 

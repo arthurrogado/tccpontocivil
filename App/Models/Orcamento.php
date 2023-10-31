@@ -2,11 +2,14 @@
 
 namespace App\Models;
 use MF\Model\Model;
+use MF\Model\Container;
 
 class Orcamento extends Model {
 
-    public static function listar($id_escritorio) {
-        return self::select(
+    private $id_escritorio;
+
+    public function listar($id_escritorio) {
+        return $this->select(
             "orcamentos",
             ["*"],
             "id_escritorio = $id_escritorio"
@@ -33,6 +36,18 @@ class Orcamento extends Model {
             "id = $id"
         );
     }
+
+    // ITENS
+
+    public function listarItens($id_orcamento)
+    {
+        return $this->select(
+            "itens",
+            ["*"],
+            "id_orcamento = $id_orcamento"
+        );
+    }
+
 
 }
 

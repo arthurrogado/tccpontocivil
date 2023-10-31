@@ -162,6 +162,11 @@ class Route extends Bootstrap {
             'controller' => 'Pages/PageUsuario',
             'action' => 'listar',
         ]);
+        array_push($routes, [
+            'route' => '/usuarios/criar',
+            'controller' => 'Pages/PageUsuario',
+            'action' => 'criar',
+        ]);
 
             // api
 
@@ -214,6 +219,33 @@ class Route extends Bootstrap {
             'controller' => 'OrcamentoController',
             'action' => 'visualizar',
         ]);
+
+        array_push($routes, [
+            'route' => '/api/orcamento/itens',
+            'controller' => 'OrcamentoController',
+            'action' => 'getItens',
+        ]);
+
+            // orçamento etapas
+        
+        array_push($routes, [
+            'route' => '/api/orcamento/etapa/criar',
+            'controller' => 'EtapaController',
+            'action' => 'criarEtapa',
+        ]);
+
+        array_push($routes, [
+            'route' => '/api/orcamento/etapa/listar',
+            'controller' => 'EtapaController',
+            'action' => 'listarEtapas',
+        ]);
+
+        array_push($routes, [
+            'route' => '/api/etapa/excluir',
+            'controller' => 'EtapaController',
+            'action' => 'excluir',
+        ]);
+
 
         $this->setRoutes($routes);
     }

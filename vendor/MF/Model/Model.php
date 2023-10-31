@@ -26,26 +26,34 @@ abstract class Model {
     public static function getConn() {
         if (!isset(self::$conn)) {
             self::$conn = Connection::getDB();
+            return self::$conn;
             // self::$conn =  new \PDO("mysql: host=".Config::$host."; dbname=".Config::$dbname, Config::$user, Config::$password);
         }
     }
 
     // Métodos genéricos para CRUD
 
-    public static function insert(string $table, array $columns, array $values) : array{
-        // Example: insert("users", ["name", "email"], ["Durov", "durov@telegram.org"]);
+    public static function insert(string $table, array $columns, array $values) : array {
         try {
             self::getConn();
-            $query = "INSERT INTO $table (".implode(", ", $columns).") VALUES ('". implode("', '", $values). "')";
+    
+            $preparedValues = array_map(function($value) {
+                return ($value !== null) ? "'$value'" : 'NULL';
+            }, $values);
+    
+            $query = "INSERT INTO $table (".implode(", ", $columns).") VALUES (". implode(", ", $preparedValues). ")";
             // like: "INSERT INTO users (name, email) VALUES ('Durov', 'durov@telegram')";
+            
             $stmt = self::$conn->prepare($query);
             $result = $stmt->execute();
-            return (["ok" => $result]);
+            // retonar o id do registro inserido
+            $id = self::$conn->lastInsertId();
+            return (["ok" => $result, "id" => $id]);
         } catch (\Throwable $th) {
-            //throw $th;
             return (["ok" => false, "message" => $th->getMessage(), "line" => $th->getLine()]);
         }
     }
+    
 
     public static function select(string $table, array $columns, string $where = null) : array {
 
@@ -97,6 +105,7 @@ abstract class Model {
                 }
             }
             $query .= " WHERE $where";
+            var_dump($query);
             $stmt = self::$conn->prepare($query);
             $result = $stmt->execute();
             return(["ok" => $result]);
@@ -113,10 +122,10 @@ abstract class Model {
             $query = "DELETE FROM $table WHERE $where";
             $stmt = self::$conn->prepare($query);
             $result = $stmt->execute();
-            echo json_encode(["ok" => $result]);
+            return (["ok" => $result]);
         } catch (\Throwable $th) {
             //throw $th;
-            echo json_encode(["ok" => false, "message" => $th->getMessage(), "line" => $th->getLine()]);
+            return (["ok" => false, "message" => $th->getMessage(), "line" => $th->getLine()]);
         }
     }
 
