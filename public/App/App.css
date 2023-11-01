@@ -180,7 +180,7 @@ iframe {
 .input-field select:focus ~ label {
     bottom: 50px;
     font-size: 0.9em;
-    color: blue;
+    color: var(--primary-color);
     transform: translateY(-25px);
     opacity: 1;
 }

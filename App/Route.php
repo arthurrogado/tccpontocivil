@@ -246,6 +246,25 @@ class Route extends Bootstrap {
             'action' => 'excluir',
         ]);
 
+            // Pesquisa composição
+
+        array_push($routes, [
+            'route' => '/api/orcamento/composicao/pesquisar',
+            'controller' => 'OrcamentoController',
+            'action' => 'pesquisarComposicao',
+        ]);
+
+
+            // Adicionar composição
+
+        array_push($routes, [
+            'route' => '/api/orcamento/composicao/adicionar',
+            'controller' => 'ItemController',
+            'action' => 'adicionar',
+        ]);
+
+            // Adicionar item
+
 
         $this->setRoutes($routes);
     }

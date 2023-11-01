@@ -120,3 +120,18 @@
 [section] {
     background-color: var(--neutral-color-1);
 }
+
+
+#composicoesPesquisa {
+    max-height: 20rem;
+    overflow-y: auto;
+    margin-top: 1rem;
+    background: var(--neutral-color-1);
+    
+    border-radius: 1rem;
+    margin: 1rem 0;
+}
+
+#composicoesPesquisa .input-field:first-child {
+    margin-top: 1rem;
+}

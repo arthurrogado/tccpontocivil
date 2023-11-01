@@ -2,7 +2,7 @@ import _Component from "./_component.js";
 
 class Table extends _Component {
 
-    constructor(parent, data, columns, headers = [], actions = [] ) {
+    constructor(parent, data, columns, headers = [], actions = [], hasSearchBar = true) {
 
         // example of actions:
         // [
@@ -97,26 +97,28 @@ class Table extends _Component {
         // Setting Element
 
         // Search bar
-        let searchBar = document.createElement('input');
-        searchBar.type = 'text';
-        searchBar.placeholder = 'Search...';
-        searchBar.addEventListener('input', event => {
-            let query = event.target.value;
-
-            let filteredData = data.filter(element => {
-                console.log('element: ', element)
-                for(let column of columns) {
-                    if(element[column].toString().toLowerCase().includes(query.toLowerCase())) return true;
-                }
-                return false;
+        if(hasSearchBar) {
+            let searchBar = document.createElement('input');
+            searchBar.type = 'text';
+            searchBar.placeholder = 'Search...';
+            searchBar.addEventListener('input', event => {
+                let query = event.target.value;
+    
+                let filteredData = data.filter(element => {
+                    console.log('element: ', element)
+                    for(let column of columns) {
+                        if(element[column].toString().toLowerCase().includes(query.toLowerCase())) return true;
+                    }
+                    return false;
+                })
+    
+                this.element.querySelector('table').remove();
+                this.renderTable(filteredData, this.headers);
             })
-
-            this.element.querySelector('table').remove();
-            this.renderTable(filteredData, this.headers);
-        })
+            this.element.append(searchBar);
+        }
         
         // Table
-        this.element.append(searchBar);
         this.renderTable(data, this.headers);
         
         this.render();

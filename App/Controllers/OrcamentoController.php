@@ -71,107 +71,19 @@ class OrcamentoController
         }
     }
 
+    // Pesquisa
 
-
-    public function oldcriarEtapa() {
-
-        $id_orcamento = filter_input(INPUT_POST, "id_orcamento", FILTER_DEFAULT);
-        $descricao = filter_input(INPUT_POST, "descricao", FILTER_DEFAULT);
-        
-        // Permissões: id_escritorio do orçamento == id_escritorio do usuário logado
-
-        $escritorio_orcamento = Container::getModel("Orcamento")->selectOne(
-            "orcamentos",
-            ["id_escritorio"],
-            "id = $id_orcamento"
-        );
-        $id_escritorio_orcamento = $escritorio_orcamento['data']->id_escritorio;
-
-        $conditions = [
-            "id_escritorio" => $id_escritorio_orcamento
-        ];
-        if(!PermissionMiddleware::checkConditions( $conditions )) return;
-
-        
-        /**
-         * 1 - Verificar se o id_orcamento existe
-         * 2 - Verificar se o orçamento tem alguma etapa
-         *  2.1 - Se não tiver, criar a primeira etapa
-         *  2.2 - Se tiver, criar a etapa e definir o seu id como id_proxima da etapa que está com id_proxima = null
-         * 3 - Retornar o id da etapa criada
-         *  
-        */
-
-        $etapaModel = Container::getModel("Etapa");
-        
-        $pdo = $etapaModel->__get("db");
-
-        try {
-            // INICIO da transação
-            $pdo->beginTransaction();
-                
-            // pegar ID da etapa que está com "id_proxima_etapa" = null (procurar pela etapa anterior, se existir)
-            $atualUltimaEtapa = $etapaModel->selectOne(
-                "etapas",
-                ["id"],
-                "id_proxima_etapa IS NULL AND id_orcamento = $id_orcamento"
-            );
-
-            // criar etapa, e guardar o id dela
-            $statusCriacao = $etapaModel->criar($id_orcamento, $descricao);
-            if(!$statusCriacao['ok']) {
-                echo json_encode(array('ok' => false, "message" => "Erro: " . $statusCriacao['message']));
-                return;
-            }
-            $id_etapa_criada = $statusCriacao['id'];
-            
-            // se existir uma etapa ANTERIOR, alterar o "id_proxima_etapa" dela para o id da etapa criada
-
-            try{
-                $id_ultima_etapa = $atualUltimaEtapa['data']->id;
-            } catch( \Throwable $th ) {
-                $id_ultima_etapa = null;
-            }
-
-            // alterar a o "id_proxima_etapa" da da etapa que está com "id_proxima_etapa" = null
-            $statusAlteracao = $etapaModel->update(
-                "etapas",
-                ["id_proxima_etapa"],
-                [$id_etapa_criada],
-                "id = $id_ultima_etapa"
-            );
-            if(!$statusAlteracao['ok']) {
-                echo json_encode(array('ok' => false, "message" => "Erro: " . $statusAlteracao['message']));
-                return;
-            }
-            
-            echo json_encode(array('ok' => true, "id_etapa_criada" => $id_etapa_criada));
-
-            // FIM da transação
-            $pdo->commit();
-
-        } catch (\Throwable $th) {
-            
-            echo json_encode(array('ok' => false, "message" => "Erro: " . $th->getMessage() ));
+    public function pesquisarComposicao()
+    {
+        $pesquisa = filter_input(INPUT_POST, "pesquisa", FILTER_DEFAULT);
+        $orcamentoModel = Container::getModel("Orcamento");
+        $status = $orcamentoModel->pesquisarComposicao($pesquisa);
+        if ($status['ok']) {
+            echo json_encode(array('ok' => true, "composicoes" => $status['data']));
+        } else {
+            echo json_encode(array('ok' => false, "message" => "Erro: " . $status['message']));
         }
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
