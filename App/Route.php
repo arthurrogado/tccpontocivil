@@ -226,7 +226,7 @@ class Route extends Bootstrap {
             'action' => 'getItens',
         ]);
 
-            // orçamento etapas
+            // orçamento ETAPAS
         
         array_push($routes, [
             'route' => '/api/orcamento/etapa/criar',
@@ -255,7 +255,7 @@ class Route extends Bootstrap {
         ]);
 
 
-            // Adicionar composição
+            // ITEM
 
         array_push($routes, [
             'route' => '/api/orcamento/composicao/adicionar',
@@ -263,8 +263,17 @@ class Route extends Bootstrap {
             'action' => 'adicionar',
         ]);
 
-            // Adicionar item
+        array_push($routes, [
+            'route' => '/api/itens/por_etapa',
+            'controller' => 'ItemController',
+            'action' => 'listar',
+        ]);
 
+        array_push($routes, [
+            'route' => '/api/item/excluir',
+            'controller' => 'ItemController',
+            'action' => 'excluir',
+        ]);
 
         $this->setRoutes($routes);
     }

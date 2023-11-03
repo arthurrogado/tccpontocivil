@@ -83,15 +83,11 @@
     background: var(--neutral-color-1);
 }
 
-#informacoes table {
-    /* 
-    invert the table's rows and columns
-    */
-
+.tabelinha {
     border-collapse: collapse;
     width: 100%;
 }
-#informacoes table th, #informacoes table td {
+.tabelinha th, .tabelinha td {
     padding: 1rem;
     border-bottom: 1px solid var(--dark-color-3);
     text-align: center;
@@ -134,4 +130,25 @@
 
 #composicoesPesquisa .input-field:first-child {
     margin-top: 1rem;
+}
+
+
+#relatorio {
+    width: 95%;
+    padding: 1rem;
+
+    display: flex;
+    justify-content: flex-end;
+    
+    
+}
+
+#total {
+    margin-top: 1rem;
+    padding: 1.5rem 1rem;
+    border-radius: 3rem 1rem;
+    box-shadow: 0 0 5px var(--dark-color-3);
+}
+#total div {
+    font-size: 2rem;
 }

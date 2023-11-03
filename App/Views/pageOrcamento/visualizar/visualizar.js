@@ -193,7 +193,7 @@ const enviarComposicao = () => {
   // verificar se há alguma vazio
   for (let key in data) {
     if (data[key] == '') {
-      new infoBox('Preencha todos os campos!', 'error')
+      new infoBox('Preencha todos os campos!', 'danger')
       return false;
     }
   }
@@ -202,7 +202,8 @@ const enviarComposicao = () => {
     .then(response => {
       if (response.ok) {
         new infoBox('Composição adicionada com sucesso!', 'success')
-        novaComposicaoModal.element.remove();
+        // novaComposicaoModal.remove();
+        document.querySelector('.box').parentElement.remove();
         listarEtapas()
       }
     })
@@ -224,29 +225,26 @@ const listarEtapas = () => {
         document.querySelector('#tableOrcamento tbody').innerHTML = '';
 
         etapas.forEach(etapa => {
-          const tr = document.createElement('tr');
-          tr.setAttribute('section', etapa.id);
+          const trEtapa = document.createElement('tr');
+          trEtapa.setAttribute('section', etapa.id);
 
-          tr.innerHTML = /*html*/`
+          trEtapa.innerHTML = /*html*/`
             <th><i class="fa fa-caret-right"></i></th>
 
             <td>
-              
-              <div class="w3-dropdown-click w3-dropdown-hover w3-container">
+              <div class="w3-dropdown-hover w3-container">
                 <i class="fa fa-wrench"></i>
                 <div class="w3-dropdown-content w3-bar-block w3-round w3-padding">
-                  <button class="delete w3-bar-item w3-button w3-deep-orange w3-hover-red w3-round">
+                  <button class="delete-etapa w3-bar-item w3-button w3-deep-orange w3-hover-red w3-round">
                     <i class="fa fa-trash"></i>
                     Excluir
                   </button>
                 </div>
               </div>
-
             </td>
 
             <td>${etapa.id}</td>
             <td></td> <!-- codigo -->
-            <td></td> <!-- banco -->
             <td>${etapa.descricao}</td>
             <td></td> <!-- unidade -->
             <td></td> <!-- quantidade -->
@@ -257,13 +255,76 @@ const listarEtapas = () => {
 
           `;
 
-          tr.querySelectorAll('.w3-dropdown-click').forEach(option => {
-            option.addEventListener('click', () => {
-              option.querySelector('div').classList.toggle('w3-show');
-            })
+          // Buscar itens da etapa
+          httpClient.makeRequest('/api/itens/por_etapa', { id_etapa: etapa.id })
+          .then(response => {
+            if (response.itens) {
+              const itens = response.itens;
+                
+              let orderedItems = [];
+            
+              // o item atual é o último, pois ele não tem próximo item
+              let currentItem = itens.find(item => item.id_proximo_item == null)
+
+              while(currentItem){
+                orderedItems.push(currentItem)
+                currentItem = itens.find(item => item.id_proximo_item == currentItem.id)
+              }
+
+              orderedItems.forEach(item => {
+                let trItem = document.createElement('tr');
+                trItem.setAttribute('from-section', etapa.id);
+
+                trItem.innerHTML = /*html*/`
+                  <tr from-section="${etapa.id}">
+                    <th><i class="fa fa-caret-right"></i></th>
+                    
+                    <td> 
+                      <div class="w3-dropdown-hover w3-container">
+                        <i class="fa fa-caret-down"></i>
+                        <div class="w3-dropdown-content w3-bar-block w3-round w3-padding">
+                          <button class="delete-item w3-bar-item w3-button w3-deep-orange w3-hover-red w3-round">
+                            <i class="fa fa-trash"></i>
+                            Excluir
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                    
+                    <td> ${item.id} </td>
+                    <td> ${item.codigo} </td>
+                    <td> ${item.descricao} </td>
+                    <td> ${item.unidade} </td>
+                    <td> ${item.quantidade} </td>
+                    <td> ${item.valor} </td>
+                    <td>---</td>
+                    <td> R$ ${ (item.quantidade * item.valor).toFixed(2) } </td>
+                      
+                  </tr>
+                `;
+                trItem.querySelector('.delete-item').addEventListener('click', () => {
+                  if(!confirm('Tem certeza que deseja excluir este item?')) return false;
+                  const data = {
+                    id_item: item.id
+                  }
+                  httpClient.makeRequest('/api/item/excluir', data)
+                    .then(response => {
+                      if (response.ok) {
+                        new infoBox('Item excluído com sucesso!', 'success');
+                        trItem.remove();
+                      }
+                    })
+                })
+
+                trEtapa.insertAdjacentElement('afterend', trItem);
+                
+              })
+            }
           })
 
-          tr.querySelector('.delete').addEventListener('click', () => {
+
+          // Delete etapa
+          trEtapa.querySelector('.delete-etapa').addEventListener('click', () => {
             const data = {
               id_etapa: etapa.id
             }
@@ -276,10 +337,26 @@ const listarEtapas = () => {
               })
           })
 
-          document.querySelector('#tableOrcamento tbody').append(tr);
+          
+
+          // Abrir itens
+          trEtapa.addEventListener('click', () => {
+            const sectionNumber = trEtapa.getAttribute('section');
+            const items = document.querySelectorAll(`tr[from-section="${sectionNumber}"]`);
+            items.forEach(item => {
+              item.classList.toggle('hidden');
+            })
+          })
+
+          document.querySelector('#tableOrcamento tbody').append(trEtapa);
         })
       }
     })
 }
+
+
+document.querySelectorAll('.from-section').forEach(item => {
+  item.querySelector('.delete')
+})
 
 listarEtapas()

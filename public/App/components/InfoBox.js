@@ -48,6 +48,7 @@ class infoBox {
             }
 
             .infoBox${hash} {
+                z-index: 9999;
                 width: 300px;
                 background-color: var(--${theme});
                 padding: 15px;
