@@ -30,6 +30,26 @@
 
 }
 
+.danger {
+    color: var(--danger-color);
+}
+.bg-danger {
+    background: var(--danger-color);
+}
+
+.success {
+    color: var(--success-color);
+}
+.bg-success {
+    background: var(--success-color);
+}
+
+.default {
+    color: var(--primary-color);
+}
+.bg-default {
+    background: var(--primary-color);
+}
 
 h1 {
     color: var(--primary-color);

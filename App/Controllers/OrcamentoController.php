@@ -32,6 +32,58 @@ class OrcamentoController
         }
     }
 
+    public function editar()
+    {
+
+        $id = filter_input(INPUT_POST, "id", FILTER_DEFAULT);
+        $orcamentoModel = Container::getModel("Orcamento");
+        $orcamento = $orcamentoModel->visualizar($id);
+        $id_escritorio_orcamento = $orcamento['data']->id_escritorio;
+
+        // Condições: id_escritorio do orçamento == id_escritorio do usuário logado
+        $conditions = [
+            "id_escritorio" => $id_escritorio_orcamento
+        ];
+        if(!PermissionMiddleware::checkConditions( $conditions )) return;
+
+        $nome = filter_input(INPUT_POST, "nome", FILTER_DEFAULT);
+        $descricao = filter_input(INPUT_POST, "descricao", FILTER_DEFAULT);
+        $estado = filter_input(INPUT_POST, "estado", FILTER_DEFAULT);
+        $data_sinapi = filter_input(INPUT_POST, "data_sinapi", FILTER_DEFAULT);
+        $bdi = filter_input(INPUT_POST, "bdi", FILTER_DEFAULT);
+        $desonerado = filter_input(INPUT_POST, "desonerado", FILTER_DEFAULT);
+
+        $status = $orcamentoModel->editar($id, $nome, $descricao, $estado, $data_sinapi, $bdi, $desonerado);
+        if ($status['ok']) {
+            echo json_encode(array('ok' => true, "message" => "Orçamento editado com sucesso"));
+        } else {
+            echo json_encode(array('ok' => false, "message" => "Erro: " . $status['message']));
+        }
+        
+    }
+
+    public function excluir()
+    {
+        $id = filter_input(INPUT_POST, "id", FILTER_DEFAULT);
+        $orcamentoModel = Container::getModel("Orcamento");
+        $orcamento = $orcamentoModel->visualizar($id);
+        $id_escritorio_orcamento = $orcamento['data']->id_escritorio;
+
+        // Permissões: id_escritorio do orçamento == id_escritorio do usuário logado
+        $conditions = [
+            "id_escritorio" => $id_escritorio_orcamento
+        ];
+        if(!PermissionMiddleware::checkConditions( $conditions )) return;
+
+        $status = $orcamentoModel->excluir($id);
+        if ($status['ok']) {
+            echo json_encode(array('ok' => true, "message" => "Orçamento excluído com sucesso"));
+        } else {
+            echo json_encode(array('ok' => false, "message" => "Erro: " . $status['message']));
+        }
+
+    }
+
     public function listar()
     {
         if(!PermissionMiddleware::checkConditions()) return;

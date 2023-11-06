@@ -99,7 +99,7 @@ class ItemController {
             // FIM TRANSACAO
             $pdo->commit();
 
-            echo json_encode(array('ok' => true, "message" => "Item criado com sucesso", "id_item_criado" => $id_item_criado));
+            echo json_encode(array('ok' => true, "id_item_criado" => $id_item_criado));
 
 
         } catch( \Throwable $th ) {
@@ -204,6 +204,36 @@ class ItemController {
             echo json_encode(array('ok' => true, "itens" => $statusItens['data']));
         } else {
             echo json_encode(array('ok' => false, "message" => "Erro: " . $statusItens['message']));
+        }
+
+    }
+
+    public function getMesesSinapi()
+    {
+        // Permissões: usuário estar logado
+        if(!PermissionMiddleware::checkConditions()) return;
+
+        $itemModel = Container::getModel("Item");
+        $statusMesesReferencia = $itemModel->getMesesSinapi();
+        if ($statusMesesReferencia['ok']) {
+            echo json_encode(array('ok' => true, "meses_referencia" => $statusMesesReferencia['data']));
+        } else {
+            echo json_encode(array('ok' => false, "message" => "Erro: " . $statusMesesReferencia['message']));
+        }
+
+    }
+
+    public function getEstadosSinapi()
+    {
+        // Permissões: usuário estar logado
+        if(!PermissionMiddleware::checkConditions()) return;
+
+        $itemModel = Container::getModel("Item");
+        $statusEstadosReferencia = $itemModel->getEstadosSinapi();
+        if ($statusEstadosReferencia['ok']) {
+            echo json_encode(array('ok' => true, "estados_referencia" => $statusEstadosReferencia['data']));
+        } else {
+            echo json_encode(array('ok' => false, "message" => "Erro: " . $statusEstadosReferencia['message']));
         }
 
     }

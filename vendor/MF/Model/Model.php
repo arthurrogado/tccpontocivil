@@ -99,13 +99,12 @@ abstract class Model {
             self::getConn();
             $query = "UPDATE $table SET ";
             for ($i=0; $i < count($columns); $i++) { 
-                $query .= "$columns[$i] = $values[$i]";
+                $query .= "$columns[$i] = '$values[$i]' ";
                 if($i < count($columns) - 1){
                     $query .= ", ";
                 }
             }
             $query .= " WHERE $where";
-            var_dump($query);
             $stmt = self::$conn->prepare($query);
             $result = $stmt->execute();
             return(["ok" => $result]);

@@ -95,6 +95,50 @@ class Item extends Model
         );
     }
 
+    public function getMesesSinapi()
+    {
+        try {
+            $pdo = $this->__get("db");
+
+            $query = "SELECT DISTINCT mes_referencia FROM detalhes_composicoes_insumos;";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute();
+            $meses = $stmt->fetchAll(\PDO::FETCH_OBJ);
+            return [
+                "ok" => true,
+                "data" => $meses
+            ];
+
+        } catch (\Throwable $th) {
+            return [
+                "ok" => false,
+                "message" => "Erro: " . $th->getMessage()
+            ];
+        }
+    }
+
+    public function getEstadosSinapi()
+    {
+        try {
+            $pdo = $this->__get("db");
+
+            $query = "SELECT DISTINCT estado_referencia FROM detalhes_composicoes_insumos;";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute();
+            $estados = $stmt->fetchAll(\PDO::FETCH_OBJ);
+            return [
+                "ok" => true,
+                "data" => $estados
+            ];
+
+        } catch (\Throwable $th) {
+            return [
+                "ok" => false,
+                "message" => "Erro: " . $th->getMessage()
+            ];
+        }
+    }
+
 }
 
 ?>

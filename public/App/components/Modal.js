@@ -90,7 +90,7 @@ class Modal extends _Component {
         header.classList.add('header');
 
         let h3 = document.createElement('h3');
-        h3.textContent = this.title;
+        h3.innerHTML = this.title;
 
         let button = document.createElement('button');
         button.textContent = 'X';
@@ -107,6 +107,16 @@ class Modal extends _Component {
 
         let footer = document.createElement('div');
         footer.classList.add('footer');
+
+        this.buttons.forEach(btn => {
+            let button = document.createElement('button');
+            button.classList.add('btn', btn.class);
+            button.textContent = btn.text;
+            button.addEventListener('click', () => {
+                btn.action();
+            });
+            footer.appendChild(button);
+        });
         
         box.append(header);
         box.append(contentDiv);

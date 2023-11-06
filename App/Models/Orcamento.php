@@ -28,6 +28,26 @@ class Orcamento extends Model {
         );
     }
 
+    public function editar ($id, $nome, $descricao, $estado, $data_sinapi, $bdi, $desonerado) {
+        return $this->update(
+            "orcamentos",
+            [
+                "nome", "descricao", "estado", "data_sinapi", "bdi", "desonerado"
+            ],
+            [
+                $nome, $descricao, $estado, $data_sinapi, $bdi, $desonerado
+            ],
+            "id = $id"
+        );
+    }
+
+    public function excluir ($id) {
+        return $this->delete(
+            "orcamentos",
+            "id = $id"
+        );
+    }
+
     public function visualizar($id)
     {
         return $this->selectOne(

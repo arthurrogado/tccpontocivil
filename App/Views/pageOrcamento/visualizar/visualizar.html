@@ -9,6 +9,7 @@
             <div id="corpoCabecalho">
                 <p>Orçamento</p>
                 <h2 id="nomeOrcamento">--</h2>
+                <p>Descrição: <span id="descricaoOrcamento">_</span></p>
                 <p>Criado em: <span id="criadoEm">_</span></p>
             </div>
         </div>
@@ -39,6 +40,8 @@
                         <tr>
                             <th>BDI</th>
                             <th>Encargos Sociais</th>
+                            <th>Estado referência</th>
+                            <th>Data SINAPI</th>
                         </tr>
                     </thead>
 
@@ -46,10 +49,15 @@
                         <tr>
                             <td id="bdi"></td>
                             <td id="encargosSociais">encargos_sociais</td>
+                            <td id="estadoReferencia">estado_referencia</td>
+                            <td id="dataSinapi">data_Sinapi</td>
                         </tr>
                     </tbody>
-
                 </table>
+
+                <div id="btnEdicaoOrcamento">
+                    <i class="fa fa-pencil"></i>
+                </div>
             </div>
 
         </div>
@@ -68,7 +76,7 @@
                         <th>UND.</th>
                         <th>QTD.</th>
                         <th>VALOR UNIT.</th>
-                        <th>VALOR COM BDI</th>
+                        <th>VALOR UNIT. COM BDI</th>
                         <th>TOTAL</th>
                     </tr>
                 </thead>
@@ -126,21 +134,21 @@
                     <thead>
                         <tr>
                             <th>Valor BDI</th>
-                            <th>Total</th>
+                            <th>Subtotal</th>
                         </tr>
                     </thead>
     
                     <tbody>
                         <tr>
                             <td id="bdi">R$9999</td>
-                            <td id="semBdi">R$9999</td>
+                            <td id="totalSemBdi">R$9999</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <div id="total">
                     <span>TOTAL</span>
-                    <div>R$ --,--</div>
+                    <div id="totalOrcamento">R$ --,--</div>
                 </div>
                 
             </div>

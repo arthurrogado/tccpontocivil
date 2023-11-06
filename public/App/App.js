@@ -39,9 +39,11 @@ const navigateTo = (path, params = null) => {
     // If it is a window popstate event, get the path from the event
     if (path instanceof PopStateEvent) {
         path = window.location.pathname
-    } else if (path == window.location.pathname) {
-        return
-    }
+    } 
+    // else if (path == window.location.pathname) {
+    //     return
+    // }
+
     // Transform params object into a string for url
     params = params ? makeUrlParams(params) : ''
     // Update the url
@@ -212,6 +214,13 @@ class HttpClient {
                 //         console.log(error)
                 //     })
             })
+    }
+
+    // Fazer reload da página com os mesmos parâmetros
+    reloadPage() {
+        let params = this.getParams()
+        let url = window.location.pathname
+        this.navigateTo(url, params)
     }
 
     // Verificar os input-fields com * e retornar false se algum estiver vazio

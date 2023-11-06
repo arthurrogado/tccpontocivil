@@ -93,6 +93,22 @@
     text-align: center;
 }
 
+#btnEdicaoOrcamento {
+    background: var(--primary-color);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    cursor: pointer;
+    transition: .2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#editarOrcamento:hover {
+    filter: brightness(1.2);
+}
+
 
 
 #orcamento {
@@ -151,4 +167,39 @@
 }
 #total div {
     font-size: 2rem;
+}
+
+
+/* Edição do orçamento */
+
+#encargo {
+    box-shadow: 0px 10px 10px #ccc;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    max-width: 20rem;
+}
+
+#encargo span {
+    padding: 1rem 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#encargo span {
+    background: var(--light-color-0);
+    color: black;
+    border: 1px solid #00000000;
+    transition: .3s;
+}
+
+#encargo span[selected] {
+    background: #0c028d;
+    color: white;
+}
+
+#encargo span:hover {
+    cursor: pointer;
+    filter: brightness(.9);
 }

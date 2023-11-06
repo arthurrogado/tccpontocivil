@@ -221,6 +221,18 @@ class Route extends Bootstrap {
         ]);
 
         array_push($routes, [
+            'route' => '/api/orcamento/excluir',
+            'controller' => 'OrcamentoController',
+            'action' => 'excluir',
+        ]);
+
+        array_push($routes, [
+            'route' => '/api/orcamento/editar',
+            'controller' => 'OrcamentoController',
+            'action' => 'editar',
+        ]);
+
+        array_push($routes, [
             'route' => '/api/orcamento/itens',
             'controller' => 'OrcamentoController',
             'action' => 'getItens',
@@ -273,6 +285,18 @@ class Route extends Bootstrap {
             'route' => '/api/item/excluir',
             'controller' => 'ItemController',
             'action' => 'excluir',
+        ]);
+
+        array_push($routes, [
+            'route' => '/api/item/meses_sinapi',
+            'controller' => 'ItemController',
+            'action' => 'getMesesSinapi',
+        ]);
+
+        array_push($routes, [
+            'route' => '/api/item/estados_sinapi',
+            'controller' => 'ItemController',
+            'action' => 'getEstadosSinapi',
         ]);
 
         $this->setRoutes($routes);
