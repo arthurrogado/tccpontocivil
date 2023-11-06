@@ -47,9 +47,6 @@ ul {
     text-align: center;
     border-radius: 1rem;
 }
-.title > h1 {
-    flex-basis: 100%;
-}
 
 .section {
     padding: 10px;

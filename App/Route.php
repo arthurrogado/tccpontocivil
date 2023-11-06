@@ -18,65 +18,10 @@ class Route extends Bootstrap {
         );
 
         $routes['home'] = array(
-            'route' => '/',
-            'controller' => 'Pages/Home',
-            'action' => 'index'
+            'route' => '/home',
+            'controller' => 'Pages/Index',
+            'action' => 'home'
         );
-
-
-
-
-        $routes['sobre_nos'] = array(
-            'route' => '/sobre_nos',
-            'controller' => 'IndexController',
-            'action' => 'sobreNos'
-        );
-
-        $routes['contato'] = array(
-            'route' => '/contato',
-            'controller' => 'IndexController',
-            'action' => 'contato'
-        );
-
-        $routes['produtos'] = array(
-            'route' => '/produtos',
-            'controller' => 'Pages/Produtos',
-            'action' => 'listar'
-        );
-
-        // PESSOAS //
-        $routes['pessoas'] = array(
-            'route' => '/pessoas',
-            'redirect' => '/pessoas/listar'
-        );
-        $routes['listar_pessoas'] = array(
-            'route' => '/pessoas/listar',
-            'controller' => 'Pages/Pessoas',
-            'action' => 'listar',
-        );
-        $routes["page_criar_pessoa"] = array(
-            "route" => "/pessoas/criar",
-            "controller" => "Pages/Pessoas",
-            "action" => "criar"
-        );
-        $routes['create_pessoa'] = array(
-            'route' => '/pessoas/create',
-            'controller' => 'PessoasController',
-            'action' => 'createPessoa',
-            'middlewares' => ['AuthMiddleware']
-        );
-        $routes['get_pessoas'] = array(
-            'route' => '/api/pessoas/get_pessoas',
-            'controller' => 'UsuarioController',
-            'action' => 'getUsuarios'
-        );
-        $routes['delete_pessoa'] = array(
-            'route' => '/pessoas/delete',
-            'controller' => 'PessoasController',
-            'action' => 'deletePessoa'
-        );
-        // //
-
 
 
         // LOGIN
@@ -94,6 +39,7 @@ class Route extends Bootstrap {
             'action' => 'login',
             'public' => true
         ]);
+
 
         // LOGOUT
 
@@ -132,13 +78,11 @@ class Route extends Bootstrap {
             'controller' => 'EscritorioController',
             'action' => 'listar',
         ]);
-
         array_push($routes, [
             'route' => '/api/escritorio/criar',
             'controller' => 'EscritorioController',
             'action' => 'createEscritorio',
         ]);
-
         array_push($routes, [
             'route' => "/api/escritorio/visualizar",
             "controller" => "EscritorioController",
@@ -149,12 +93,17 @@ class Route extends Bootstrap {
             'controller' => 'EscritorioController',
             'action' => 'excluir',
         ]);
+        array_push($routes, [
+            'route' => '/api/escritorio/editar',
+            'controller' => 'EscritorioController',
+            'action' => 'editar',
+        ]);
 
-        // USUÁRIO
+        // USUARIO
 
             // paginas
         array_push($routes, [
-            'route' => '/usuario',
+            'route' => '/usuarios',
             'redirect' => '/usuario/listar'
         ]);
         array_push($routes, [
@@ -163,18 +112,50 @@ class Route extends Bootstrap {
             'action' => 'listar',
         ]);
         array_push($routes, [
-            'route' => '/usuarios/criar',
+            'route' => '/usuario/criar',
             'controller' => 'Pages/PageUsuario',
             'action' => 'criar',
+        ]);
+        array_push($routes, [
+            'route' => '/usuario/visualizar',
+            'controller' => 'Pages/PageUsuario',
+            'action' => 'visualizar',
+        ]);
+        array_push($routes, [
+            'route' => '/usuario/mudar_senha',
+            'controller' => 'Pages/PageUsuario',
+            'action' => 'mudarSenha',
         ]);
 
             // api
 
         array_push($routes, [
+            'route' => '/api/usuario/check_login',
+            'controller' => 'UsuarioController',
+            'action' => 'checkLogin',
+            'public' => true
+        ]);
+        array_push($routes, [
             'route' => '/api/usuario/listar',
             'controller' => 'UsuarioController',
             'action' => 'getUsuarios',
         ]);
+        array_push($routes, [
+            'route' => '/api/usuario/criar',
+            'controller' => 'UsuarioController',
+            'action' => 'criar',
+        ]);
+        array_push($routes, [
+            'route' => '/api/usuario/visualizar',
+            'controller' => 'UsuarioController',
+            'action' => 'visualizar',
+        ]);
+        array_push($routes, [
+            'route' => '/api/usuario/mudar_senha',
+            'controller' => 'UsuarioController',
+            'action' => 'mudarSenha',
+        ]);
+
 
         // ORÇAMENTO
 
@@ -270,7 +251,7 @@ class Route extends Bootstrap {
             // ITEM
 
         array_push($routes, [
-            'route' => '/api/orcamento/composicao/adicionar',
+            'route' => '/api/item/adicionar',
             'controller' => 'ItemController',
             'action' => 'adicionar',
         ]);

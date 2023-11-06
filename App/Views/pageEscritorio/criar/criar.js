@@ -13,7 +13,9 @@ button.addEventListener('click', async (e) => {
     
     httpClient.makeRequest(url, data)
     .then(response => {
-        console.log('response: ', response)
+        if(response.ok){
+            httpClient.navigateTo('/escritorio/listar')
+        }
     })
 
 })

@@ -332,7 +332,7 @@ const enviarComposicao = () => {
     }
   }
 
-  httpClient.makeRequest('/api/orcamento/composicao/adicionar', data)
+  httpClient.makeRequest('/api/item/adicionar', data)
     .then(response => {
       if (response.ok) {
         new infoBox('Composição adicionada com sucesso!', 'success')
@@ -517,6 +517,8 @@ const listarEtapas = () => {
                   if (response.ok) {
                     new infoBox('Etapa excluída com sucesso!', 'success')
                     listarEtapas()
+                    // Fechar todos os modais
+                    new Modal().fecharTodosModais();
                   }
                 })
             }

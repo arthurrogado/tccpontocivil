@@ -249,8 +249,8 @@ class HttpClient {
         let params = {}
         location.href
             .split('?')[1] // get the part after the '?' in url
-            .split('&') // split the params divided by '&'
-            .map(param => {
+            ?.split('&') // split the params divided by '&'
+            ?.map(param => {
                 let [key, value] = param.split('=')
                 params[key] = value
             })

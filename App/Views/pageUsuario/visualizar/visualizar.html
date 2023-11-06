@@ -1,0 +1,52 @@
+<div class="card">
+
+    <h1 class="title">
+        Editar usuário
+    </h1>
+
+    <form class="formUsuario">
+
+        <input type="text" name="id" class="hidden">
+
+        <div class="input-field">
+            <input type="text" name="nome" required>
+            <label>Nome*</label>
+        </div>
+
+        <div class="input-field">
+            <input type="text" name="usuario" required>
+            <label>Usuário*</label>
+        </div>
+
+        <div class="input-field">
+            <input type="text" name="cpf" required>
+            <label>CPF</label>
+        </div>
+
+        <div class="input-field">
+            <select name="categoria" id="categoria" required>
+                <option value="funcionario" selected>Funcionário</option>
+                <option value="administrador">Administrador</option>
+            </select>
+            <label>Categoria</label>
+        </div>
+
+        <div class="input-field">
+            <input type="text" name="telefone" required>
+            <label>Telefone</label>
+        </div>
+
+        <div class="input-field">
+            <select name="id_escritorio" id="id_escritorio" required>
+                <option></option>
+            </select>
+            <label for="id_escritorio">Escritório do usuário*</label>
+        </div>
+
+        <button id="atualizarUsuario" type="button" class="btn btn-primary">Editar usuário</button>
+
+        <a href="/usuario/mudar_senha" id="mudarSenha">Mudar senha</a>
+
+    </form>
+
+</div>

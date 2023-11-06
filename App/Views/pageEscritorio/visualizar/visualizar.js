@@ -38,7 +38,9 @@ const editar = () => {
     botaoSalvar.addEventListener("click", () => {
         const data = new FormData(document.querySelector("form"));
         httpClient.makeRequest("/api/escritorio/editar", data).then((response) => {
-            console.log(response);
+            if(response.ok){
+                httpClient.reloadPage();
+            }
         });
     });
 

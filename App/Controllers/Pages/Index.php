@@ -9,8 +9,9 @@ class Index extends Action {
         $this->render("404");
     }
 
-    public function produtos() {
-        $this->render("produtos");
+    public function home()
+    {
+        $this->render("home");
     }
 
 }

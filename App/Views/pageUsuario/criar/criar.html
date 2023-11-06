@@ -1,0 +1,53 @@
+<div class="card">
+
+    <div class="title">
+        <h1>Criar usuário</h1>
+    </div>
+
+    <form class="form" id="formCriarUsuario">
+        
+        <div class="input-field">
+            <input type="text" name="nome" required>
+            <label>Nome*</label>
+        </div>
+
+        <div class="input-field">
+            <input type="text" name="usuario" required>
+            <label>Usuário*</label>
+        </div>
+
+        <div class="input-field">
+            <input type="password" name="senha" required>
+            <label>Senha*</label>
+        </div>
+
+        <div class="input-field">
+            <input type="text" name="cpf" required>
+            <label>CPF</label>
+        </div>
+
+        <div class="input-field">
+            <select name="categoria" id="categoria" required>
+                <option value="funcionario" selected>Funcionário</option>
+                <option value="administrador">Administrador</option>
+            </select>
+            <label>Categoria</label>
+        </div>
+
+        <div class="input-field">
+            <input type="text" name="telefone" required>
+            <label>Telefone</label>
+        </div>
+
+        <div class="input-field">
+            <select name="id_escritorio" id="id_escritorio" required>
+                <option></option>
+            </select>
+            <label for="id_escritorio">Escritório do usuário*</label>
+        </div>
+
+        <button id="registrarUsuario" type="button" class="btn btn-primary">Registrar usuário</button>
+
+    </form>
+
+</div>

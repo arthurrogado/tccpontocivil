@@ -49,6 +49,14 @@ class Escritorio extends Model {
         );
     }
 
+    public function editar($id, $nome, $cnpj, $telefone, $endereco, $observacoes) {
+        return $this->update(
+            "escritorios",
+            ["nome", "cnpj", "telefone", "endereco", "observacoes"],
+            [$nome, $cnpj, $telefone, $endereco, $observacoes],
+            "id = $id"
+        );
+    }
 
 }
 

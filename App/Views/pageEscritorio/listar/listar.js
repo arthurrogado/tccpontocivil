@@ -1,7 +1,13 @@
 import HttpClient from "/App/App.js";
 import Table from "/App/components/Table.js";
+import Button from "/App/components/Button.js";
 
 const httpClient = new HttpClient();
+
+const btnNovo = new Button("#actions", "Novo").element;
+btnNovo.addEventListener("click", () => {
+    httpClient.navigateTo("/escritorio/criar");
+})
 
 httpClient.makeRequest("/api/escritorio/listar").then((response) => {
     const columns = ["id", "nome", "cnpj"];

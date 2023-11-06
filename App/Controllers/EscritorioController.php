@@ -81,6 +81,31 @@ class EscritorioController {
         }
     }
 
+    public function editar() {
+        try {
+            PermissionMiddleware::checkConditions([
+                "id" => "1"
+            ]);
+    
+            $id = filter_input(INPUT_POST, 'id', FILTER_DEFAULT);
+            $nome = filter_input(INPUT_POST, 'nome', FILTER_DEFAULT);
+            $cnpj = filter_input(INPUT_POST, 'cnpj', FILTER_DEFAULT);
+            $telefone = filter_input(INPUT_POST, 'telefone', FILTER_DEFAULT);
+            $endereco = filter_input(INPUT_POST, 'endereco', FILTER_DEFAULT);
+            $observacoes = filter_input(INPUT_POST, 'observacoes', FILTER_DEFAULT);
+    
+            $escritorio = Container::getModel("Escritorio");
+            $status = $escritorio->editar($id, $nome, $cnpj, $telefone, $endereco, $observacoes);
+            if($status['ok']) {
+                echo json_encode(array('ok' => true, "message" => "Escritório editado com sucesso"));
+            } else {
+                echo json_encode(array('ok' => false, "message" => "Erro: ".$status['message'] ));
+            }
+        } catch (\Throwable $th) {
+            echo json_encode(array('ok' => false, "message" => "Erro: ".$th->getMessage() ));
+        }
+    }
+
 }
 
 ?>

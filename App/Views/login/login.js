@@ -1,6 +1,9 @@
 import HttpClient from "/App/App.js"
 const httpClient = new HttpClient()
 
+import atualizarSidebar from "/App/Utils/atualizarSidebar.js"
+import atualizarInformacoesUsuario from "/App/Utils/atualizarInformacoesUsuario.js"
+
 const form = document.querySelector('.formLogin')
 console.log(form)
 form.addEventListener('submit', async (e) => {
@@ -10,13 +13,10 @@ form.addEventListener('submit', async (e) => {
     httpClient.makeRequest('/api/login', formdata)
     .then(response => {
         if(response.ok) {
-            httpClient.navigateTo('/pessoas')
+            httpClient.navigateTo('/home')
+            atualizarSidebar()
+            atualizarInformacoesUsuario()
         }
     })
 
-})
-
-import Badge from "/App/components/Badge.js"
-new Badge('#badge', 'Novo').element.addEventListener('click', () => {
-    httpClient.navigateTo('/pessoas/criar')
 })

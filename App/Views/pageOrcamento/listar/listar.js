@@ -80,8 +80,9 @@ const confirmarExclusao = (id) => {
                 httpClient.makeRequest('/api/orcamento/excluir', {id: id})
                 .then(response => {
                     if(response.ok) {
-                        modalExcluir.element.remove();
-                        httpClient.reloadPage();
+                        // Fechar todos os modais
+                        new Modal().fecharTodosModais();
+                        document.querySelector(`#tableOrcamentos tbody tr[data-id="${id}"]`).remove();
                     }
                 });
             }

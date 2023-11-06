@@ -27,6 +27,42 @@ class Usuario extends Model
         return $stmt->fetch(\PDO::FETCH_OBJ);
     }
 
+    public function criar($nome, $usuario, $senha, $categoria, $cpf, $telefone, $id_escritorio)
+    {
+        $senha = password_hash($senha, PASSWORD_DEFAULT);
+        return $this->insert(
+            "usuarios",
+            [
+                "nome", "usuario", "senha", "categoria", "cpf", "telefone", "id_escritorio"
+            ],
+            [
+                $nome, $usuario, $senha, $categoria, $cpf, $telefone, $id_escritorio
+            ]
+        );
+    }
+
+    public function visualizar($id)
+    {
+        return $this->selectOne(
+            "usuarios",
+            ["*"],
+            "id = $id"
+        );
+    }
+
+    public function mudarSenha($id, $senha)
+    {
+        $senha = password_hash($senha, PASSWORD_DEFAULT);
+        return $this->update(
+            "usuarios",
+            ["senha"],
+            [$senha],
+            "id = $id"
+        );
+    }
+
+
+
     public static function checkLogin() {
         // session_start();
 

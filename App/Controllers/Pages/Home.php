@@ -10,10 +10,6 @@ class Home extends Action {
         $this->render("index");
     }
 
-    public function produtos() {
-        $this->render("produtos");
-    }
-
 }
 
 ?>

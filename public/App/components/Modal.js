@@ -127,6 +127,12 @@ class Modal extends _Component {
 
     }
 
+    fecharTodosModais() {
+        document.querySelectorAll('.box').forEach(box => {
+            box.parentElement.remove();
+        });
+    }
+
 }
 
 export default Modal;

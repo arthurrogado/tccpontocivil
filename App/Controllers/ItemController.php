@@ -44,6 +44,8 @@ class ItemController {
             echo json_encode(array('ok' => false, "message" => "Erro: Etapa não encontrada"));
             return;
         }
+        // Como retorna um array de objetos, é necessário pegar o primeiro objeto e depois pegar o id_escritorio
+        $id_escritorio_etapa = $id_escritorio_etapa[0]->id_escritorio;
 
         $conditions = [
             "id_escritorio" => $id_escritorio_etapa
@@ -191,6 +193,8 @@ class ItemController {
             echo json_encode(array('ok' => false, "message" => "Erro: Etapa não encontrada"));
             return;
         }
+        // Como retorna um array de objetos, é necessário pegar o primeiro objeto e depois pegar o id_escritorio
+        $id_escritorio_etapa = $id_escritorio_etapa[0]->id_escritorio;
 
         $conditions = [
             "id_escritorio" => $id_escritorio_etapa
