@@ -10,6 +10,7 @@ abstract class Bootstrap {
 
     public function __construct() {
         $this->initRoutes();
+        // var_dump( $this->getUrl() );
         $this->run($this->getUrl());
     }
 
@@ -94,8 +95,12 @@ abstract class Bootstrap {
     }
 
     protected function getUrl() {
-        return parse_url($_SERVER['PATH_INFO'], PHP_URL_PATH);
-        //return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        // return parse_url($_SERVER['PATH_INFO'], PHP_URL_PATH);
+        
+        $request_url = $_SERVER['REQUEST_URI'];
+        // Remover o primeiro "/api" da url
+        $request_url = substr($request_url, 4);
+        return parse_url( $request_url , PHP_URL_PATH);
     }
 
 }

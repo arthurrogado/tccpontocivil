@@ -68,28 +68,25 @@ class Orcamento extends Model {
         );
     }
 
-    // Composição
+    // Pesquisa
 
-    public function pesquisarComposicao($pesquisa)
+    public function pesquisa($pesquisa, $tipo)
     {
         return $this->select(
             "composicoes_insumos",
             ["*"],
-            "descricao LIKE '%$pesquisa%' OR codigo LIKE '%$pesquisa%' AND tipo = 'C'"
+            "(descricao LIKE '%$pesquisa%' OR codigo LIKE '%$pesquisa%') AND tipo = '$tipo'"
         );
     }
 
-    public function adicionarComposicao($id_orcamento, $codigo)
+    public function pesquisarComposicao($pesquisa)
     {
-        return $this->insert(
-            "itens",
-            [
-                "id_orcamento", "codigo"
-            ],
-            [
-                $id_orcamento, $codigo
-            ]
-        );
+        return $this->pesquisa($pesquisa, "C");
+    }
+
+    public function pesquisarInsumo($pesquisa)
+    {
+        return $this->pesquisa($pesquisa, "I");
     }
 
 }

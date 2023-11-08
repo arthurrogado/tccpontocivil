@@ -8,7 +8,8 @@
 
     try {
         //code...
-        require_once "../../vendor/autoload.php";
+        // require_once "../../vendor/autoload.php";
+        require_once __DIR__ . "/../../vendor/autoload.php";
         $route = new \App\Route;
     } catch (\Throwable $th) {
         //throw $th;

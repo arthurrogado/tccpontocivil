@@ -7,9 +7,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE DATABASE IF NOT EXISTS `pontocivil` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
-USE `pontocivil`;
-
 CREATE TABLE IF NOT EXISTS `colaboradores` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
@@ -38,24 +35,15 @@ CREATE TABLE IF NOT EXISTS `colaboradores_obras` (
   CONSTRAINT `FK__obras` FOREIGN KEY (`id_obra`) REFERENCES `obras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-CREATE TABLE IF NOT EXISTS `composicoes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `codigo` int(11) NOT NULL DEFAULT 0,
-  `descricao` varchar(255) NOT NULL DEFAULT '',
-  `unidade` varchar(10) NOT NULL COMMENT '2023-09',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `codigo` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=22660 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
 CREATE TABLE IF NOT EXISTS `composicoes_insumos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `codigo` int(11) NOT NULL DEFAULT 0,
-  `descricao` varchar(255) NOT NULL DEFAULT '',
+  `codigo` int(11) NOT NULL,
+  `descricao` varchar(255) NOT NULL,
   `unidade` varchar(10) NOT NULL COMMENT '2023-09',
   `tipo` enum('C','I') NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `codigo` (`codigo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=22660 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=7554 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE IF NOT EXISTS `custos_adicionais` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -74,12 +62,12 @@ CREATE TABLE IF NOT EXISTS `detalhes_composicoes_insumos` (
   `codigo` int(11) NOT NULL COMMENT 'codigo vindo da sinapi',
   `estado_referencia` varchar(2) NOT NULL,
   `mes_referencia` date NOT NULL,
-  `desonerado` tinyint(1) NOT NULL DEFAULT 0,
+  `desonerado` enum('0','1') NOT NULL DEFAULT '0',
   `valor` float NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `FK_detalhes_composicoes_composicoes` (`codigo`) USING BTREE,
   CONSTRAINT `FK_detalhes_composicoes_insumos_composicoes_insumos` FOREIGN KEY (`codigo`) REFERENCES `composicoes_insumos` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=22660 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=7554 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE IF NOT EXISTS `escritorios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -90,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `escritorios` (
   `observacoes` varchar(255) DEFAULT NULL,
   `deletado` tinyint(4) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `etapas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -101,17 +89,8 @@ CREATE TABLE IF NOT EXISTS `etapas` (
   KEY `FK_etapas_etapas` (`id_proxima_etapa`) USING BTREE,
   KEY `FK_etapas_orcamentos` (`id_orcamento`),
   CONSTRAINT `FK_etapas_etapas` FOREIGN KEY (`id_proxima_etapa`) REFERENCES `etapas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_etapas_orcamentos` FOREIGN KEY (`id_orcamento`) REFERENCES `orcamentos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-CREATE TABLE IF NOT EXISTS `insumos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `codigo` int(11) NOT NULL DEFAULT 0,
-  `descricao` varchar(255) NOT NULL DEFAULT '0',
-  `unidade` varchar(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `codigo` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  CONSTRAINT `FK_etapas_orcamentos` FOREIGN KEY (`id_orcamento`) REFERENCES `orcamentos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `itens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -121,11 +100,13 @@ CREATE TABLE IF NOT EXISTS `itens` (
   `id_etapa` int(11) NOT NULL,
   `id_proximo_item` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_orcamento_itens_orcamentos_etapas` (`id_etapa`),
   KEY `FK_orcamento_itens_orcamento_itens` (`id_proximo_item`) USING BTREE,
-  CONSTRAINT `FK_itens_itens` FOREIGN KEY (`id_proximo_item`) REFERENCES `itens` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_orcamento_itens_orcamentos_etapas` FOREIGN KEY (`id_etapa`) REFERENCES `etapas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  KEY `FK_itens_composicoes_insumos` (`codigo`),
+  KEY `FK_itens_etapas` (`id_etapa`),
+  CONSTRAINT `FK_itens_composicoes_insumos` FOREIGN KEY (`codigo`) REFERENCES `composicoes_insumos` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_itens_etapas` FOREIGN KEY (`id_etapa`) REFERENCES `etapas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `FK_itens_itens` FOREIGN KEY (`id_proximo_item`) REFERENCES `itens` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `obras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -143,15 +124,15 @@ CREATE TABLE IF NOT EXISTS `orcamentos` (
   `descricao` varchar(255) DEFAULT NULL,
   `criado_em` datetime NOT NULL DEFAULT current_timestamp(),
   `estado` varchar(2) NOT NULL COMMENT 'Ex.: GO',
-  `data_sinapi` varchar(7) NOT NULL COMMENT 'YYYY-MM',
+  `data_sinapi` date NOT NULL COMMENT '2023-09-01',
   `bdi` float DEFAULT 0,
-  `desonerado` tinyint(4) DEFAULT 0,
+  `desonerado` enum('0','1') DEFAULT NULL,
   `id_pasta` int(11) DEFAULT NULL,
   `id_escritorio` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_orcamentos_escritorios` (`id_escritorio`),
   CONSTRAINT `FK_orcamentos_escritorios` FOREIGN KEY (`id_escritorio`) REFERENCES `escritorios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `pastas_orcamentos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -191,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   UNIQUE KEY `usuario` (`usuario`),
   KEY `FK_usuarios_escritorio` (`id_escritorio`),
   CONSTRAINT `FK_usuarios_escritorio` FOREIGN KEY (`id_escritorio`) REFERENCES `escritorios` (`id`) ON DELETE NO ACTION ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

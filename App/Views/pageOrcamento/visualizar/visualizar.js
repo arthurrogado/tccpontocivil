@@ -33,6 +33,107 @@ const atualizarInformacoes = () => {
 }
 atualizarInformacoes();
 
+// FUNÇÕES _______________________________________________________________
+
+const getEtapasOptions = async () => {
+  let optionsEtapas = "";
+  let response = await httpClient.makeRequest('/api/orcamento/etapa/listar', { id_orcamento: httpClient.getParams().id })
+  const etapas = response.etapas;
+  etapas.forEach(etapa => {
+    optionsEtapas += /*html*/`
+      <option value="${etapa.id}">${etapa.descricao}</option>
+    `;
+  })
+  return optionsEtapas;
+}
+
+// PESQUISA
+const pesquisarComposicao = (pesquisa) => {
+  pesquisar(pesquisa, 'composicao')
+}
+const pesquisarInsumo = (pesquisa) => {
+  pesquisar(pesquisa, 'insumo')
+}
+const pesquisar = (pesquisa, tipo, parent = '#itensPesquisa') => {
+  document.querySelector(parent).innerHTML = '';
+  if (pesquisa.length < 3) return false;
+
+  httpClient.makeRequest(`/api/orcamento/${tipo}/pesquisar`, { pesquisa: pesquisa })
+    .then(response => {
+      if (response.ok) {
+        const resultado = response.resultado;
+
+        console.log('resultado: ', resultado)
+
+        pesquisa = pesquisa.toUpperCase();
+
+        // organizar para os itens que começa com o termo da pesquisa aparecerem primeiro
+        function compararPorDescricaoInicial(a, b) {
+          const descricaoA = a.descricao.toUpperCase();
+          const descricaoB = b.descricao.toUpperCase();
+      
+          if (descricaoA.startsWith(pesquisa) && !descricaoB.startsWith(pesquisa)) {
+              return -1; // "a" vem antes de "b"
+          } else if (!descricaoA.startsWith(pesquisa) && descricaoB.startsWith(pesquisa)) {
+              return 1; // "b" vem antes de "a"
+          } else {
+              // Caso nenhuma das descrições comece com a palavra-chave, mantenha a ordem original
+              return 0;
+          }
+        }
+        resultado.sort(compararPorDescricaoInicial);
+
+        const tableResultados = new Table(parent, resultado, ['codigo', 'descricao', 'unidade'], ['Código', 'Descrição', 'Unidade'], [], false).element
+        tableResultados.querySelector('thead').style.position = 'sticky';
+        tableResultados.querySelector('thead').style.top = '0';
+
+        tableResultados.querySelectorAll('tbody tr').forEach(tr => {
+
+          // definir o item composicao_insumo a ser colocado. 
+          // colocar as informações dele no #composicaoInsumo selecionado
+          // depois definir quantidade e clicar no botão adicionar
+
+          tr.addEventListener('click', () => {
+            selecionarItem(tr, "#itensPesquisa");
+          })
+
+        })
+
+      }
+    })
+}
+
+
+// SELECIONAR uma composição para o item
+const selecionarItem = (tr, parent = '#itensPesquisa') => {
+  const codigo = tr.querySelector(':nth-child(1)').textContent;
+  const descricao = tr.querySelector(':nth-child(2)').textContent;
+  const unidade = tr.querySelector(':nth-child(3)').textContent;
+
+  document.querySelector(parent).innerHTML = /*html*/`
+    <div class="input-field">
+      <input type="text" name="codigo" value="${codigo}" readonly>
+      <label>Código</label>
+    </div>
+    <div class="input-field">
+      <input type="text" name="descricao" value="${descricao}" readonly>
+      <label>Descrição</label>
+    </div>
+    <div class="input-field">
+      <input type="text" name="unidade" value="${unidade}" readonly>
+      <label>Unidade</label>
+    </div>
+  `;
+
+  document.querySelector('[name="etapa"]').focus();
+}
+
+
+
+
+
+
+
 document.querySelector('#btnEdicaoOrcamento').addEventListener('click', () => {
   const modalEditarOrcamento = new Modal("body", "Editar orçamento", /*html*/`
       <div class="">
@@ -59,7 +160,6 @@ document.querySelector('#btnEdicaoOrcamento').addEventListener('click', () => {
             <div class="input-field">
                 <select name="data_sinapi" required>
                     <option value=""></option>
-                    <option value="09/10">09/10</option>
                 </select>
                 <label>Mês da base SINAPI*</label>
             </div>
@@ -209,119 +309,19 @@ btnAddEtapa.addEventListener('click', () => {
 
 
 // Adicionar COMPOSIÇÃO --------------------------------------------
-const btnAddComposicao = document.querySelector('#addComposicao');
-btnAddComposicao.addEventListener('click', async () => {
-
-  let optionsEtapas = "";
-  let response = await httpClient.makeRequest('/api/orcamento/etapa/listar', { id_orcamento: httpClient.getParams().id })
-  if (response.etapas) {
-    const etapas = response.etapas;
-    etapas.forEach(etapa => {
-      optionsEtapas += /*html*/`
-        <option value="${etapa.id}">${etapa.descricao}</option>
-      `;
-    })
-  }
-
-  const contentModal = /*html*/`
-    <div class="input-field">
-      <input type="text" name="descricao" required>
-      <label>Descrição</label>
-    </div>
-    <div id="composicoesPesquisa"></div>
-
-    <div class="input-field">
-      <select name="etapa" required>
-        <option value=""></option>
-        ${optionsEtapas}
-      </select>
-      <label>Etapa</label>
-    </div>
-
-    <div class="input-field">
-      <input type="number" name="quantidade" required>
-      <label>Quantidade</label>
-    </div>
-
-    <button class="btn btn-primary" id="enviarComposicao">Criar</button>
-  `;
-
-  const novaComposicaoModal = new Modal("body", "Adicionar composição", contentModal, [])
-  document.querySelector('#enviarComposicao').addEventListener('click', () => {
-    enviarComposicao()
-  })
-
-  novaComposicaoModal.element.querySelector('.box').style.maxWidth = '90%';
-
-  let timeout = null;
-  document.querySelector('[name="descricao"]').addEventListener('input', (e) => {
-    document.querySelector('#composicoesPesquisa').innerHTML = 'Buscando...';
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      pesquisarComposicao(e.target.value)
-    }, 1000)
-  })
-
-});
-
-// PESQUISA
-const pesquisarComposicao = (pesquisa) => {
-  document.querySelector('#composicoesPesquisa').innerHTML = '';
-  if (pesquisa.length < 3) return false;
-
-  httpClient.makeRequest('/api/orcamento/composicao/pesquisar', { pesquisa: pesquisa })
-    .then(response => {
-      if (response.composicoes) {
-        const tableResultComposicoes = new Table("#composicoesPesquisa", response.composicoes, ['codigo', 'descricao', 'unidade'], ['Código', 'Descrição', 'Unidade'], [], false).element
-        tableResultComposicoes.querySelector('thead').style.position = 'sticky';
-        tableResultComposicoes.querySelector('thead').style.top = '0';
-
-        tableResultComposicoes.querySelectorAll('tbody tr').forEach(tr => {
-
-          // definir o item composicao_insumo a ser colocado. 
-          // colocar as informações dele no #composicaoInsumo selecionado
-          // depois definir quantidade e clicar no botão adicionar
-
-          tr.addEventListener('click', () => {
-            selecionarComposicao(tr);
-          })
-
-        })
-
-      }
-    })
-}
-// SELECIONAR uma composição para o item
-const selecionarComposicao = (tr) => {
-  const codigo = tr.querySelector(':nth-child(1)').textContent;
-  const descricao = tr.querySelector(':nth-child(2)').textContent;
-  const unidade = tr.querySelector(':nth-child(3)').textContent;
-
-  document.querySelector('#composicoesPesquisa').innerHTML = /*html*/`
-    <div class="input-field">
-      <input type="text" name="codigo" value="${codigo}" readonly>
-      <label>Código</label>
-    </div>
-    <div class="input-field">
-      <input type="text" name="descricao" value="${descricao}" readonly>
-      <label>Descrição</label>
-    </div>
-    <div class="input-field">
-      <input type="text" name="unidade" value="${unidade}" readonly>
-      <label>Unidade</label>
-    </div>
-  `;
-
-  document.querySelector('[name="etapa"]').focus();
-}
 
 // ENVIAR PARA ADICIONAR COMPOSICAO
-const enviarComposicao = () => {
+const enviarItem = (tipo) => {
+  if( tipo != 'I' && tipo != 'C' ){
+    new infoBox('Erro ao enviar item!', 'danger')
+    return false;
+  }
+
   const data = {
     id_etapa: document.querySelector('[name="etapa"]')?.value,
     codigo: document.querySelector('[name="codigo"]')?.value,
     quantidade: document.querySelector('[name="quantidade"]')?.value,
-    tipo: 'C'
+    tipo: tipo
   }
 
   // verificar se há alguma vazio
@@ -335,7 +335,7 @@ const enviarComposicao = () => {
   httpClient.makeRequest('/api/item/adicionar', data)
     .then(response => {
       if (response.ok) {
-        new infoBox('Composição adicionada com sucesso!', 'success')
+        new infoBox('Item adicionado com sucesso!', 'success')
         // novaComposicaoModal.remove();
         document.querySelector('.box').parentElement.remove();
         listarEtapas()
@@ -343,6 +343,101 @@ const enviarComposicao = () => {
     })
 
 }
+
+
+
+const btnAddComposicao = document.querySelector('#addComposicao');
+btnAddComposicao.addEventListener('click', async () => {
+
+  const contentModal = /*html*/`
+    <div class="input-field">
+      <input type="text" name="descricao" required>
+      <label>Descrição</label>
+    </div>
+    <div id="itensPesquisa"></div>
+
+    <div class="input-field">
+      <select name="etapa" required>
+        <option value=""></option>
+        ${await getEtapasOptions()}
+      </select>
+      <label>Etapa</label>
+    </div>
+
+    <div class="input-field">
+      <input type="number" name="quantidade" required>
+      <label>Quantidade</label>
+    </div>
+
+    <button class="btn btn-primary" id="enviarComposicao">Adicionar composição</button>
+  `;
+
+  const novaComposicaoModal = new Modal("body", "Adicionar composição", contentModal, [])
+  document.querySelector('#enviarComposicao').addEventListener('click', () => {
+    enviarItem('C');
+  })
+
+  novaComposicaoModal.element.querySelector('.box').style.maxWidth = '90%';
+
+  let timeout = null;
+  document.querySelector('[name="descricao"]').addEventListener('input', (e) => {
+    document.querySelector('#itensPesquisa').innerHTML = 'Buscando...';
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      pesquisarComposicao(e.target.value)
+    }, 1000)
+  })
+
+});
+
+
+// ADICIONAR INSUMO
+
+const btnAddInsumo = document.querySelector('#addInsumo');
+btnAddInsumo.addEventListener('click', async () => {
+
+  let contentModalInsumo = /*html*/`
+    <div class="input-field">
+      <input type="text" name="descricao" required>
+      <label>Descrição</label>
+    </div>
+    <div id="itensPesquisa"></div>
+
+    <div class="input-field">
+      <select name="etapa" required>
+        <option value=""></option>
+        ${await getEtapasOptions()}
+      </select>
+      <label>Etapa</label>
+    </div>
+
+    <div class="input-field">
+      <input type="number" name="quantidade" required>
+      <label>Quantidade</label>
+    </div>
+
+    <button class="btn btn-primary" id="enviarInsumo">Adicionar insumo</button>
+
+  `;
+  const novoInsumoModel = new Modal('body', 'Quer adicionar um insumo?', contentModalInsumo).element;
+  novoInsumoModel.querySelector('.box').style.maxWidth = '90%';
+
+  let timeout = null;
+  document.querySelector('[name="descricao"]').addEventListener('input', (e) => {
+    document.querySelector('#itensPesquisa').innerHTML = 'Buscando...';
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      pesquisarInsumo(e.target.value)
+    }, 1000)
+  })
+
+  document.querySelector('#enviarInsumo').addEventListener('click', () => {
+    enviarItem('I');
+  })
+
+})
+
+
 
 
 // LISTAR ETAPAS
@@ -409,6 +504,7 @@ const listarEtapas = () => {
                 // Preencher TOTAL do orçamento
                 document.querySelector('#totalSemBdi').textContent = `R$ ${totalOrcamento.toFixed(2)}`;
                 document.querySelector('#totalOrcamento').textContent = `R$ ${(totalOrcamento * (1 + window.orcamento.bdi / 100)).toFixed(2)}`;
+                document.querySelector('#totalBdi').textContent = `R$ ${(totalOrcamento * window.orcamento.bdi / 100).toFixed(2)}`;
 
                 let orderedItems = [];
 
@@ -443,7 +539,7 @@ const listarEtapas = () => {
                       </div>
                     </td>
                     
-                    <td> ${item?.tipo == "i" ?
+                    <td> ${item?.tipo == "I" ?
                       `<i class="fa fa-cube"></i> ` :
                       `<i class="fa fa-cubes"></i> `
                     } </td>

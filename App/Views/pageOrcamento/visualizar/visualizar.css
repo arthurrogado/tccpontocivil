@@ -134,7 +134,7 @@
 }
 
 
-#composicoesPesquisa {
+#itensPesquisa {
     max-height: 20rem;
     overflow-y: auto;
     margin-top: 1rem;
@@ -144,7 +144,7 @@
     margin: 1rem 0;
 }
 
-#composicoesPesquisa .input-field:first-child {
+#itensPesquisa .input-field:first-child {
     margin-top: 1rem;
 }
 

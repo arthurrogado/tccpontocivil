@@ -21,7 +21,6 @@ document.querySelectorAll('nav').forEach(el => {
 
 
 
-
 // EXECUÇÃO
 
 atualizarSidebar();

@@ -29,6 +29,43 @@ class UsuarioController {
         }
 
     }
+
+    public function editar()
+    {
+        // Permissões: ser admin do sistema (id = 1) ou ser o próprio usuário
+        if(!PermissionMiddleware::checkConditions(["id" => "1"])) return;
+
+        $id = filter_input(INPUT_POST, "id", FILTER_DEFAULT);
+        $nome = filter_input(INPUT_POST, "nome", FILTER_DEFAULT);
+        $usuario = filter_input(INPUT_POST, "usuario", FILTER_DEFAULT);
+        $categoria = filter_input(INPUT_POST, "categoria", FILTER_DEFAULT);
+        $cpf = filter_input(INPUT_POST, "cpf", FILTER_DEFAULT);
+        $telefone = filter_input(INPUT_POST, "telefone", FILTER_DEFAULT);
+        $id_escritorio = filter_input(INPUT_POST, "id_escritorio", FILTER_DEFAULT);
+
+        $modelUsuario = Container::getModel("Usuario");
+        $statusEdicao = $modelUsuario->editar($id, $nome, $usuario, $categoria, $cpf, $telefone, $id_escritorio);
+        if($statusEdicao['ok']) {
+            echo json_encode(array('ok' => true, "message" => "Usuário editado com sucesso"));
+        } else {
+            echo json_encode(array('ok' => false, "message" => "Erro: ".$statusEdicao['message'] ));
+        }
+    }
+
+    public function excluir()
+    {
+        // Permissões: ser admin do sistema (id = 1)
+        if(!PermissionMiddleware::checkConditions(["id" => "1"])) return;
+
+        $id = filter_input(INPUT_POST, "id", FILTER_DEFAULT);
+        $modelUsuario = Container::getModel("Usuario");
+        $statusExclusao = $modelUsuario->excluir($id);
+        if($statusExclusao['ok']) {
+            echo json_encode(array('ok' => true, "message" => "Usuário excluído com sucesso"));
+        } else {
+            echo json_encode(array('ok' => false, "message" => "Erro: ".$statusExclusao['message'] ));
+        }
+    }
     
     public function login() {
         $usuario = filter_input(INPUT_POST, "usuario", FILTER_DEFAULT);

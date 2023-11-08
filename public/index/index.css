@@ -51,6 +51,19 @@
     background: var(--primary-color);
 }
 
+.primary {
+    color: var(--primary-color);
+}
+.bg-primary {
+    background: var(--primary-color);
+}
+
+.secondary {
+    color: var(--secondary-color);
+}
+.bg-secondary {
+    background: var(--secondary-color);
+}
 
 
 

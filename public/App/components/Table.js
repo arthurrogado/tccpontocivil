@@ -161,16 +161,17 @@ class Table extends _Component {
             if(this.actions.length > 0) {
 
 
+                let cell = document.createElement('td');
                 this.actions.forEach(action => {
-                    let cell = document.createElement('td');
                     let button = document.createElement('button');
+                    button.classList.add('btn', 'btn-primary');
                     button.innerHTML = action.text;
                     button.addEventListener('click', () => {
                         action.action(element.id);
                     })
                     cell.append(button);
-                    row.append(cell);
                 });
+                row.append(cell);
             };
 
             tbody.append(row);

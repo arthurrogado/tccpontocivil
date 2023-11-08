@@ -1,4 +1,4 @@
-import HttpClient from "../HttpClient.js";
+import HttpClient from "/App/App.js";
 const httpClient = new HttpClient();
 
 // Atualizar sidebar
@@ -6,11 +6,13 @@ const httpClient = new HttpClient();
 function returnNavItem( href, nome, icon = 'fa-solid fa-folder') {
     let div = document.createElement('div')
     div.classList.add('nav-item')
-    div.setAttribute('href', href)
     div.innerHTML = `
         <i class="fa ${icon}"></i>
         <span>${nome}</span>
     `
+    div.addEventListener('click', () => {
+        httpClient.navigateTo(href)
+    })
     return div
 }
 
@@ -50,8 +52,8 @@ function atualizarSidebar(){
             // Usuário comum
             } else if(usuario.id !== 1) {
                 popularMenuItems([
-                    ['home', 'Home', 'fa-solid fa-home'],
-                    ['orcamentos', 'Orçamentos', 'fa-folder'],
+                    ['/home', 'Home', 'fa-solid fa-home'],
+                    ['/orcamentos', 'Orçamentos', 'fa-folder'],
                 ])
             } else {
                 popularMenuItems([])

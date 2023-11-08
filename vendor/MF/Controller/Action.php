@@ -23,14 +23,16 @@ abstract class Action {
         $currentClass = str_replace("App\\Controllers\\", "", $currentClass);
         $currentClass = str_replace("Controller", "", $currentClass);
         $currentClass = str_replace("Pages\\", "", $currentClass); // now we have: "Pessoas"
-        $currentClass = strtolower( $currentClass );
+        // $currentClass = strtolower( $currentClass );
+        $currentClass = lcfirst($currentClass);
 
         // criar array com as variáveis que serão usadas na view: html, css, js, etc
         $result = array();
 
         ob_start();
 
-        $base_app_views = "../../App/Views/";
+        $base_app_views =  "../../App/Views/";
+
 
         if(file_exists($base_app_views . $currentClass . "/" . $view.".phtml")){
             require_once $base_app_views . $currentClass . "/" . $view.".phtml";
@@ -45,10 +47,9 @@ abstract class Action {
         }
         
         else {
-            echo "View não encontrada. Current class: " . $currentClass . " View: " . $view . ".phtml <br> Caminho: ../App/Views/" . $currentClass . "/" . $view . ".phtml";
+            echo "View não encontrada. Current class: " . $currentClass . " View: " . $view . ".html <br> Caminho: ../App/Views/" . $currentClass . "/" . $view . ".phtml";
         }
 
-        
         
         $html = ob_get_clean();
         $html = (string)$html;

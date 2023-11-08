@@ -146,6 +146,16 @@ class Route extends Bootstrap {
             'action' => 'criar',
         ]);
         array_push($routes, [
+            'route' => '/api/usuario/editar',
+            'controller' => 'UsuarioController',
+            'action' => 'editar',
+        ]);
+        array_push($routes, [
+            'route' => '/api/usuario/excluir',
+            'controller' => 'UsuarioController',
+            'action' => 'excluir',
+        ]);
+        array_push($routes, [
             'route' => '/api/usuario/visualizar',
             'controller' => 'UsuarioController',
             'action' => 'visualizar',
@@ -239,13 +249,19 @@ class Route extends Bootstrap {
             'action' => 'excluir',
         ]);
 
-            // Pesquisa composição
+            // Pesquisa itens
 
         array_push($routes, [
             'route' => '/api/orcamento/composicao/pesquisar',
             'controller' => 'OrcamentoController',
             'action' => 'pesquisarComposicao',
         ]);
+        array_push($routes, [
+            'route' => '/api/orcamento/insumo/pesquisar',
+            'controller' => 'OrcamentoController',
+            'action' => 'pesquisarInsumo',
+        ]);
+
 
 
             // ITEM

@@ -41,6 +41,24 @@ class Usuario extends Model
         );
     }
 
+    public function editar($id, $nome, $usuario, $categoria, $cpf, $telefone, $id_escritorio)
+    {
+        return $this->update(
+            "usuarios",
+            ["nome", "usuario", "categoria", "cpf", "telefone", "id_escritorio"],
+            [$nome, $usuario, $categoria, $cpf, $telefone, $id_escritorio],
+            "id = $id"
+        );
+    }
+
+    public function excluir($id)
+    {
+        return $this->delete(
+            "usuarios",
+            "id = $id"
+        );
+    }
+
     public function visualizar($id)
     {
         return $this->selectOne(

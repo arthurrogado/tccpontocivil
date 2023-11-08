@@ -131,7 +131,19 @@ class OrcamentoController
         $orcamentoModel = Container::getModel("Orcamento");
         $status = $orcamentoModel->pesquisarComposicao($pesquisa);
         if ($status['ok']) {
-            echo json_encode(array('ok' => true, "composicoes" => $status['data']));
+            echo json_encode(array('ok' => true, "resultado" => $status['data']));
+        } else {
+            echo json_encode(array('ok' => false, "message" => "Erro: " . $status['message']));
+        }
+    }
+
+    public function pesquisarInsumo()
+    {
+        $pesquisa = filter_input(INPUT_POST, "pesquisa", FILTER_DEFAULT);
+        $orcamentoModel = Container::getModel("Orcamento");
+        $status = $orcamentoModel->pesquisarInsumo($pesquisa);
+        if ($status['ok']) {
+            echo json_encode(array('ok' => true, "resultado" => $status['data'] ));
         } else {
             echo json_encode(array('ok' => false, "message" => "Erro: " . $status['message']));
         }

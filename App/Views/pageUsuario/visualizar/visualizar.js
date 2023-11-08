@@ -23,3 +23,16 @@ httpClient.makeRequest('/api/usuario/visualizar', {id: httpClient.getParams().id
 })
 
 document.querySelector('#mudarSenha').href = `/usuario/mudar_senha?id=${httpClient.getParams().id}`
+
+
+// Editar usuário
+document.querySelector('#editarUsuario').addEventListener('click', () => {
+    const form = document.querySelector('.formUsuario');
+    const formdata = new FormData(form);
+    httpClient.makeRequest('/api/usuario/editar', formdata)
+    .then(response => {
+        if(response.ok) {
+            httpClient.reloadPage();
+        }
+    })
+})
