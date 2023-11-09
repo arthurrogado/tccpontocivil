@@ -466,10 +466,16 @@ const listarEtapas = () => {
               <div class="w3-dropdown-hover w3-container">
                 <i class="fa fa-wrench"></i>
                 <div class="w3-dropdown-content w3-bar-block w3-round w3-padding">
-                  <button class="delete-etapa w3-bar-item w3-button w3-deep-orange w3-hover-red w3-round">
+
+                  <button class="excluir-etapa w3-bar-item w3-button w3-deep-orange w3-hover-red w3-round">
                     <i class="fa fa-trash"></i>
                     Excluir
                   </button>
+                  <button class="editar-etapa w3-bar-item w3-button w3-round w3-margin-top w3-hover-blue" style="background: var(--secondary-color); color: white;">
+                    <i class="fa fa-edit"></i>
+                    Editar
+                  </button>
+
                 </div>
               </div>
             </td>
@@ -481,7 +487,7 @@ const listarEtapas = () => {
             <td></td> <!-- quantidade -->
             <td></td> <!-- valor unitario -->
 
-            <td>R$ --</td> <!-- valor com bdi -->
+            <td></td> <!-- valor com bdi -->
             <td class="totalEtapa">R$ --</td> <!-- valor total -->
 
           `;
@@ -499,12 +505,21 @@ const listarEtapas = () => {
                   item.quantidade * item.valor
                 ).reduce((a, b) => a + b, 0);
 
-                trEtapa.querySelector('.totalEtapa').textContent = `R$ ${(totalEtapa * (1 + window.orcamento.bdi / 100)).toFixed(2)}`;
+                let totalEtapaFormatadoComBDI = (totalEtapa * (1 + window.orcamento.bdi / 100)).toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                trEtapa.querySelector('.totalEtapa').textContent = `R$ ${ totalEtapaFormatadoComBDI }`;
                 totalOrcamento += totalEtapa;
                 // Preencher TOTAL do orçamento
-                document.querySelector('#totalSemBdi').textContent = `R$ ${totalOrcamento.toFixed(2)}`;
-                document.querySelector('#totalOrcamento').textContent = `R$ ${(totalOrcamento * (1 + window.orcamento.bdi / 100)).toFixed(2)}`;
-                document.querySelector('#totalBdi').textContent = `R$ ${(totalOrcamento * window.orcamento.bdi / 100).toFixed(2)}`;
+                let totalOrcamentoFormatado = totalOrcamento.toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.querySelector('#totalSemBdi').textContent = `R$ ${ totalOrcamentoFormatado }`;
+
+                let totalOrcamentoComBdi = totalOrcamento * (1 + window.orcamento.bdi / 100);
+                let totalOrcamentoFormatadoComBDI = totalOrcamentoComBdi.toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.querySelector('#totalOrcamento').textContent = `R$ ${  (totalOrcamentoFormatadoComBDI) }`;
+
+                let totalBdi = totalOrcamento * window.orcamento.bdi / 100;
+                let totalBdiFormatado = totalBdi.toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.querySelector('#totalBdi').textContent = `R$ ${ totalBdiFormatado }`;
 
                 let orderedItems = [];
 
@@ -520,6 +535,9 @@ const listarEtapas = () => {
                 orderedItems.forEach(item => {
                   let trItem = document.createElement('tr');
                   trItem.setAttribute('from-section', etapa.id);
+
+                  let totalItem = item?.quantidade * item?.valor * (1 + window.orcamento.bdi / 100);
+                  let totalItemFormatado = totalItem.toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
                   trItem.innerHTML = /*html*/`
                   <tr from-section="${etapa.id}">
@@ -550,7 +568,7 @@ const listarEtapas = () => {
                     <td> ${item?.quantidade} </td>
                     <td> ${item?.valor} </td>
                     <td> ${(item?.valor * (1 + window.orcamento.bdi / 100)).toFixed(2)} </td>
-                    <td> R$ ${(item?.quantidade * item?.valor * (1 + window.orcamento.bdi / 100)).toFixed(2)} </td>
+                    <td> R$ ${ totalItemFormatado } </td>
                       
                   </tr>
                 `;
@@ -579,8 +597,8 @@ const listarEtapas = () => {
             })
 
 
-          //== Delete etapa
-          trEtapa.querySelector('.delete-etapa').addEventListener('click', () => {
+          //== Excluir e Editar etapa 
+          trEtapa.querySelector('.excluir-etapa').addEventListener('click', () => {
 
             new Modal('body', 'Excluir etapa', 'Tem certeza que deseja excluir esta etapa?', [
               {
@@ -619,7 +637,40 @@ const listarEtapas = () => {
                 })
             }
 
-          }) //_______________________________________________________________
+          }) 
+          
+          trEtapa.querySelector('.editar-etapa').addEventListener('click', () => {
+            const modalEditarEtapa = new Modal("body", "Editar etapa", /*html*/`
+                <div>
+                  <form class="form">
+                      <div class="input-field">
+                          <input type="text" name="descricao" required>
+                          <label>Descrição*</label>
+                      </div>
+                      <button type="button" id="editarEtapa" class="btn btn-primary">Editar</button>
+                  </form>
+              </div>
+              `).element;
+
+            modalEditarEtapa.querySelector("[name='descricao']").value = etapa.descricao;
+
+            document.querySelector('#editarEtapa').addEventListener('click', () => {
+              let data = {
+                id_etapa: etapa.id,
+                descricao: modalEditarEtapa.querySelector("[name='descricao']").value
+              };
+              httpClient.makeRequest('/api/etapa/editar', data)
+                .then(response => {
+                  if (response.ok) {
+                    // close modal
+                    document.querySelector('.box').parentElement.remove();
+                    // atualizarInformacoes();
+                    listarEtapas()
+                  }
+                })
+            })
+          })
+          //_______________________________________________________________
 
 
           // Abrir itens

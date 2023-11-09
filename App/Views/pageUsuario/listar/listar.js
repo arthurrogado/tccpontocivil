@@ -1,6 +1,7 @@
 import HttpClient from "/App/App.js";
 import Table from "/App/components/Table.js";
-import Badge from "/App/components/Badge.js";
+import Badge from "/App/components/Badge.js"
+import Button from "/App/components/Button.js";
 import Modal from "/App/components/Modal.js";
 
 const httpClient = new HttpClient();
@@ -57,7 +58,7 @@ httpClient.makeRequest("/api/usuario/listar")
 
 })
 
-new Badge("#actions", "Novo").element.addEventListener("click", () => {
+new Button("#actions", "Novo").element.addEventListener("click", () => {
     httpClient.navigateTo("/usuario/criar")
 })
 

@@ -6,6 +6,46 @@ use App\Middlewares\PermissionMiddleware;
 
 class EtapaController {
 
+    public function validarEtapaOrcamentoEscritorio_id($id_etapa)
+    {
+        // Essa função se o ID do escritório do Orçamento da Etapa é igual ao ID do escritório do usuário logado
+                // Permissões: id_escritorio do orçamento da etapa == id_escritorio do usuário logado
+
+        // Pegar o id_orcamento da etapa
+        $etapaModel = Container::getModel("Etapa");
+        $statusIdOrcamento = $etapaModel->selectOne(
+            "etapas",
+            ["id_orcamento"],
+            "id = $id_etapa"
+        );
+        if(!$statusIdOrcamento['data']) {
+            echo json_encode(array('ok' => false, "message" => "Erro: id_orcamento não encontrado"));
+            return;
+        }
+        $id_orcamento = $statusIdOrcamento['data']->id_orcamento;
+
+        // Pegar o id_escritorio do orçamento
+        $orcaModel = Container::getModel("Orcamento");
+        $statusIdEscritorio = $orcaModel->selectOne(
+            "orcamentos",
+            ["id_escritorio"],
+            "id = $id_orcamento"
+        );
+        if(!$statusIdEscritorio['data']) {
+            echo json_encode(array('ok' => false, "message" => "Erro: id_escritorio não encontrado"));
+            return;
+        }
+        $id_escritorio_orcamento = $statusIdEscritorio['data']->id_escritorio;
+
+        $conditions = [
+            "id_escritorio" => $id_escritorio_orcamento
+        ];
+
+        // Verificar as permissões
+        if(!PermissionMiddleware::checkConditions( $conditions )) return false;
+        return true;
+    }
+
     public function criarEtapa() {
 
         $id_orcamento = filter_input(INPUT_POST, "id_orcamento", FILTER_DEFAULT);
@@ -109,11 +149,11 @@ class EtapaController {
 
     }
 
-
     public function excluir()
     {
+        $id_etapa_excluir = filter_input(INPUT_POST, "id_etapa", FILTER_DEFAULT);
 
-        // Permissões: id_escritorio do orçamento da etapa == id_escritorio do usuário logado
+        if(!$this->validarEtapaOrcamentoEscritorio_id($id_etapa_excluir)) return;
 
         /** 
          * O que fazer?
@@ -124,7 +164,6 @@ class EtapaController {
         
         try {
 
-            $id_etapa_excluir = filter_input(INPUT_POST, "id_etapa", FILTER_DEFAULT);
 
             $etapaModel = Container::getModel("etapa");
 
@@ -170,6 +209,31 @@ class EtapaController {
 
     }
 
+    public function editar()
+    {
+        
+        $id_etapa = filter_input(INPUT_POST, "id_etapa", FILTER_DEFAULT);
+        
+        // Permissões: id_escritorio do orçamento da etapa == id_escritorio do usuário logado
+        if(!$this->validarEtapaOrcamentoEscritorio_id($id_etapa)) return;
+
+        try {
+
+            $descricao = filter_input(INPUT_POST, "descricao", FILTER_DEFAULT);
+
+            $etapaModel = Container::getModel("etapa");
+            $status = $etapaModel->editar($id_etapa, $descricao);
+
+            if($status['ok']) {
+                echo json_encode(array('ok' => true, "message" => "Etapa editada com sucesso"));
+            } else {
+                echo json_encode(array('ok' => false, "message" => "Erro: " . $status['message'] ));
+            }
+
+        } catch (\Throwable $th) {
+            echo json_encode(array('ok' => false, "message" => "Erro: " . $th->getMessage() ));
+        }
+    }
 
 }
 

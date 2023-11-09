@@ -5,7 +5,6 @@ import atualizarSidebar from "/App/Utils/atualizarSidebar.js"
 import atualizarInformacoesUsuario from "/App/Utils/atualizarInformacoesUsuario.js"
 
 const form = document.querySelector('.formLogin')
-console.log(form)
 form.addEventListener('submit', async (e) => {
     e.preventDefault()
     const formdata = new FormData(form)

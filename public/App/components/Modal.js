@@ -125,6 +125,20 @@ class Modal extends _Component {
         this.element.append(box);
         this.render();
 
+        // Fechar modal com ESC
+        document.addEventListener('keydown', (event) => {
+            if (event.key == 'Escape') {
+                this.fecharTodosModais();
+            }
+        });
+
+        // Fechar modal clicando fora (no elemento modal)
+        this.element.addEventListener('click', (event) => {
+            if (event.target == this.element) {
+                this.element.remove();
+            }
+        });
+
     }
 
     fecharTodosModais() {

@@ -1,5 +1,3 @@
-import urlRoutes from "../App/urlRoutes.js"
-
 let main = 'main'
 
 function makeObjectParams(params) {
@@ -102,12 +100,13 @@ async function loadPage(path) {
         }
     }
 
-    document.querySelector(main).innerHTML = response?.html
-    document.querySelector(main).innerHTML += `<style>${response?.css}</style>`
-    let script = document.createElement('script')
-    script.type = 'module'
-    script.innerHTML = response?.js
-    document.querySelector(main).appendChild(script)
+    document.querySelector(main).innerHTML = response?.html;
+    document.querySelector(main).innerHTML += `<style>${response?.css}</style>`;
+    let script = document.createElement('script');
+    script.hash = Date.now();
+    script.type = 'module';
+    script.innerHTML = response?.js;
+    document.querySelector(main).appendChild(script);
 
     // get all the scripts from the response
     // make them into elements
@@ -170,14 +169,14 @@ class HttpClient {
         return fetch(url, options)
             .then(response => response.text())
             .then(response => {
-                console.log('TEXT response: ')
-                console.log(response)
+                // console.log('TEXT response: ')
+                // console.log(response)
                 return response
             })
             .then(response => JSON.parse(response))
             .then(response => {
-                console.log('response: ')
-                console.log(response)
+                // console.log('response: ')
+                // console.log(response)
 
                 if(response.message) {
                     if(response.ok) {

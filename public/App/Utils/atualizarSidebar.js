@@ -1,4 +1,5 @@
 import HttpClient from "/App/App.js";
+
 const httpClient = new HttpClient();
 
 // Atualizar sidebar

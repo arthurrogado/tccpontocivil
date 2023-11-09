@@ -35,7 +35,19 @@ class Etapa extends Model {
         );
     }
 
-    
+    public function editar($id, $descricao)
+    {
+        return $this->update(
+            "etapas",
+            [
+                "descricao"
+            ],
+            [
+                $descricao
+            ],
+            "id = $id"
+        );
+    }    
 
 }
 

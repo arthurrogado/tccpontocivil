@@ -111,9 +111,19 @@ class Table extends _Component {
                     }
                     return false;
                 })
-    
-                this.element.querySelector('table').remove();
-                this.renderTable(filteredData, this.headers);
+                
+                // this.element.querySelect('table').remove();
+                // this.renderTable(filteredData, this.headers);
+                
+                // Ocultar as linhas que não contém o query
+                this.element.querySelectorAll('table tbody tr').forEach(tr => {
+                    if(filteredData.find(element => element.id == tr.dataset.id)) {
+                        tr.style.display = 'table-row';
+                    } else {
+                        tr.style.display = 'none';
+                    }
+                })
+
             })
             this.element.append(searchBar);
         }

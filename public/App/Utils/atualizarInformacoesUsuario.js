@@ -1,4 +1,4 @@
-import HttpClient from "../HttpClient.js";
+import HttpClient from "/App/App.js";
 const httpClient = new HttpClient();
 
 // Atualizar informações do usuário

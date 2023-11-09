@@ -236,17 +236,20 @@ class Route extends Bootstrap {
             'controller' => 'EtapaController',
             'action' => 'criarEtapa',
         ]);
-
         array_push($routes, [
             'route' => '/api/orcamento/etapa/listar',
             'controller' => 'EtapaController',
             'action' => 'listarEtapas',
         ]);
-
         array_push($routes, [
             'route' => '/api/etapa/excluir',
             'controller' => 'EtapaController',
             'action' => 'excluir',
+        ]);
+        array_push($routes, [
+            'route' => '/api/etapa/editar',
+            'controller' => 'EtapaController',
+            'action' => 'editar',
         ]);
 
             // Pesquisa itens
