@@ -1,5 +1,5 @@
 :root {
-    --picker-color: hsl(125, 100%, 50%);
+    --picker-color: hsl(244, 100%, 50%);
     --success-color: #07aa3e;
     --danger-color: #8d0a0a;
 
@@ -85,12 +85,27 @@
     background: linear-gradient(0deg, var(--primary-color), var(--dark-color-3));
     color: white;
     font-size: 1.5rem;
-    padding: 1rem;
+    padding: .5rem;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+#headerApp > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#controlSidebar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    aspect-ratio: 1;
+    padding: .5rem;
+    cursor: pointer;
 }
 #informacoesUsuario {
     display: flex;
@@ -111,12 +126,16 @@
 nav {
     display: flex;
     flex-direction: column;
-    width: 20%;
-    min-width: 150px;
+    /* width: 20%; */
+    /* min-width: 150px; */
 
     background: var(--primary-color);
     color: white;
-
+    width: 0px;
+    transition: .3s ease-in-out;
+}
+nav.active {
+    width: 18rem;
 }
 
 nav .nav-item {

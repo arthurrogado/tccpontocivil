@@ -32,9 +32,13 @@ class Modal extends _Component {
                 max-width: 600px;
                 display: flex;
                 flex-direction: column;
+
+                max-height: 90%;
             }
 
             .modal .box .header {
+                z-index: 99;
+                background: #ffffff;
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
@@ -43,6 +47,9 @@ class Modal extends _Component {
                 align-items: center;
                 padding: 1rem;
                 border-bottom: 1px solid var(--light-color-1);
+
+                position: sticky;
+                top: 0;
             }
 
             .modal .box .header h3 {
@@ -64,9 +71,12 @@ class Modal extends _Component {
 
             .modal .box .content {
                 padding: 1rem;
+                overflow-y: auto;
             }
 
             .modal .box .footer {
+                z-index: 99;
+                background: #ffffff;
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
@@ -75,6 +85,9 @@ class Modal extends _Component {
                 align-items: center;
                 padding: 1rem;
                 border-top: 1px solid var(--light-color-3);
+
+                position: sticky;
+                bottom: 0;
             }
 
         `;

@@ -105,7 +105,6 @@ class Table extends _Component {
                 let query = event.target.value;
     
                 let filteredData = data.filter(element => {
-                    console.log('element: ', element)
                     for(let column of columns) {
                         if(element[column].toString().toLowerCase().includes(query.toLowerCase())) return true;
                     }

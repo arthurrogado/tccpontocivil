@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Início</title>
+    <title>PontoCivil</title>
     <link rel="stylesheet" href="/App/App.css">
     <link rel="stylesheet" href="/index/index.css">
 
@@ -19,18 +19,21 @@
 
         <header id="headerApp">
             <div>
-                PontoCivil
+                <div id="controlSidebar">
+                    <i class="fa fa-bars"></i>
+                </div>
+                <h3>PontoCivil</h3>
             </div>
 
             <div id="informacoesUsuario">
                 <div id="nomeUsuario"></div>
-                <a href="/logout">Sair</a>
+                <a href="/logout" class="w3-round-large w3-red w3-tag">Sair</a>
             </div>
         </header>
 
         <div id="content">
 
-            <nav>
+            <nav class="active">
                 
                 <div class="nav-item" href="/home">
                     <i class="fa fa-home" aria-hidden="true"></i>

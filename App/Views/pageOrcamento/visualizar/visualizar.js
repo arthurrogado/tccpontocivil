@@ -137,7 +137,6 @@ const selecionarItem = (tr, parent = '#itensPesquisa') => {
 document.querySelector('#btnEdicaoOrcamento').addEventListener('click', () => {
   const modalEditarOrcamento = new Modal("body", "Editar orçamento", /*html*/`
       <div class="">
-        <h1>Editar Orçamento</h1>
 
         <form class="form" id="formCriarOrcamento">
             <div class="input-field">
@@ -174,12 +173,11 @@ document.querySelector('#btnEdicaoOrcamento').addEventListener('click', () => {
                 <span value="1">Desonerado</span>
             </div>
 
-            <button type="button" id="editarOrcamento" class="btn btn-primary">Editar</button>
-
         </form>
 
     </div>
     `).element;
+    modalEditarOrcamento.querySelector('.footer').innerHTML = /*html*/`<button type="button" id="editarOrcamento" class="btn btn-primary">Editar</button>`
 
   modalEditarOrcamento.querySelector("[name='nome']").value = orcamento.nome;
   modalEditarOrcamento.querySelector("[name='descricao']").value = orcamento.descricao;

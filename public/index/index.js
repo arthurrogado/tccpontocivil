@@ -19,6 +19,10 @@ document.querySelectorAll('nav').forEach(el => {
     })
 })
 
+// Controlar o sidebar
+document.querySelector('#controlSidebar').addEventListener('click', () => {
+    document.querySelector('nav').classList.toggle('active')
+})
 
 
 // EXECUÇÃO

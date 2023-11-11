@@ -21,7 +21,7 @@
 }
 
 #encargo span[selected] {
-    background: #0c028d;
+    background: var(--primary-color);
     color: white;
 }
 
