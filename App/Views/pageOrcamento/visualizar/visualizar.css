@@ -73,6 +73,9 @@
 #addInsumo {
     background: var(--tertiary-color);
 }
+#exportarPdf {
+    background: var(--neutral-color-3);
+}
 
 
 
@@ -128,8 +131,8 @@
 
 [section] {
     background-color: var(--neutral-color-1);
+    cursor: pointer;
 }
-
 
 #itensPesquisa {
     max-height: 20rem;
@@ -199,4 +202,19 @@
 #encargo span:hover {
     cursor: pointer;
     filter: brightness(.9);
+}
+
+
+.nowrap {
+    white-space: nowrap;
+}
+
+@media print {
+    .noprint {
+        display: none;
+    }
+    th, td {
+        -webkit-print-color-adjust: exact; /* Para navegadores WebKit como Chrome e Safari */
+        color-adjust: exact; /* Para outros navegadores */
+    }
 }

@@ -9,27 +9,35 @@ const httpClient = new HttpClient();
 
 const atualizarInformacoes = () => {
   httpClient.makeRequest('/api/orcamento/visualizar', { id: httpClient.getParams().id })
-  .then(response => {
-    if (response.orcamento) {
-      const orcamento = response.orcamento;
-      window.orcamento = orcamento;
-  
-      let replaces = {
-        "#nomeOrcamento": orcamento.nome,
-        "#descricaoOrcamento": orcamento.descricao,
-        "#criadoEm": orcamento.criado_em,
-        "#bdi": orcamento.bdi,
-        "#encargosSociais": orcamento.desonerado == 1 ? 'Desonerado' : 'Não desonerado',
-        "#estadoReferencia": orcamento.estado,
-        "#dataSinapi": orcamento.data_sinapi,
+    .then(response => {
+      if (response.orcamento) {
+        const orcamento = response.orcamento;
+
+        // Formatar datas
+        orcamento.criado_em = new Date(orcamento.criado_em).toLocaleDateString('pt-br');
+        let data_sinapi = new Date(orcamento.data_sinapi)
+        // adicionar 1 dia para o mês ficar correto
+        data_sinapi.setDate(data_sinapi.getDate() + 1)
+        data_sinapi = data_sinapi.toLocaleDateString('pt-br', { month: '2-digit', year: 'numeric' });
+
+        window.orcamento = orcamento;
+
+        let replaces = {
+          "#nomeOrcamento": orcamento.nome,
+          "#descricaoOrcamento": orcamento.descricao,
+          "#criadoEm": orcamento.criado_em,
+          "#bdi": orcamento.bdi,
+          "#encargosSociais": orcamento.desonerado == 1 ? 'Desonerado' : 'Não desonerado',
+          "#estadoReferencia": orcamento.estado,
+          "#dataSinapi": data_sinapi,
+        }
+
+        for (let key in replaces) {
+          document.querySelector(key).textContent = replaces[key];
+        }
+
       }
-  
-      for (let key in replaces) {
-        document.querySelector(key).textContent = replaces[key];
-      }
-  
-    }
-  })
+    })
 }
 atualizarInformacoes();
 
@@ -63,7 +71,6 @@ const pesquisar = (pesquisa, tipo, parent = '#itensPesquisa') => {
       if (response.ok) {
         const resultado = response.resultado;
 
-        console.log('resultado: ', resultado)
 
         pesquisa = pesquisa.toUpperCase();
 
@@ -71,14 +78,14 @@ const pesquisar = (pesquisa, tipo, parent = '#itensPesquisa') => {
         function compararPorDescricaoInicial(a, b) {
           const descricaoA = a.descricao.toUpperCase();
           const descricaoB = b.descricao.toUpperCase();
-      
+
           if (descricaoA.startsWith(pesquisa) && !descricaoB.startsWith(pesquisa)) {
-              return -1; // "a" vem antes de "b"
+            return -1; // "a" vem antes de "b"
           } else if (!descricaoA.startsWith(pesquisa) && descricaoB.startsWith(pesquisa)) {
-              return 1; // "b" vem antes de "a"
+            return 1; // "b" vem antes de "a"
           } else {
-              // Caso nenhuma das descrições comece com a palavra-chave, mantenha a ordem original
-              return 0;
+            // Caso nenhuma das descrições comece com a palavra-chave, mantenha a ordem original
+            return 0;
           }
         }
         resultado.sort(compararPorDescricaoInicial);
@@ -177,7 +184,7 @@ document.querySelector('#btnEdicaoOrcamento').addEventListener('click', () => {
 
     </div>
     `).element;
-    modalEditarOrcamento.querySelector('.footer').innerHTML = /*html*/`<button type="button" id="editarOrcamento" class="btn btn-primary">Editar</button>`
+  modalEditarOrcamento.querySelector('.footer').innerHTML = /*html*/`<button type="button" id="editarOrcamento" class="btn btn-primary">Editar</button>`
 
   modalEditarOrcamento.querySelector("[name='nome']").value = orcamento.nome;
   modalEditarOrcamento.querySelector("[name='descricao']").value = orcamento.descricao;
@@ -310,7 +317,7 @@ btnAddEtapa.addEventListener('click', () => {
 
 // ENVIAR PARA ADICIONAR COMPOSICAO
 const enviarItem = (tipo) => {
-  if( tipo != 'I' && tipo != 'C' ){
+  if (tipo != 'I' && tipo != 'C') {
     new infoBox('Erro ao enviar item!', 'danger')
     return false;
   }
@@ -458,9 +465,9 @@ const listarEtapas = () => {
 
           // Preencher ETAPA --------------------------------------------
           trEtapa.innerHTML = /*html*/`
-            <th><i class="fa fa-caret-right"></i></th>
+            <th class="noprint"><i class="fa fa-caret-right"></i></th>
 
-            <td>
+            <td class="noprint">
               <div class="w3-dropdown-hover w3-container">
                 <i class="fa fa-wrench"></i>
                 <div class="w3-dropdown-content w3-bar-block w3-round w3-padding">
@@ -478,7 +485,7 @@ const listarEtapas = () => {
               </div>
             </td>
 
-            <td>${etapa.id}</td>
+            <td class="noprint">${etapa.id}</td>
             <td></td> <!-- codigo -->
             <td>${etapa.descricao}</td>
             <td></td> <!-- unidade -->
@@ -505,19 +512,19 @@ const listarEtapas = () => {
 
                 let totalEtapaFormatadoComBDI = (totalEtapa * (1 + window.orcamento.bdi / 100)).toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-                trEtapa.querySelector('.totalEtapa').textContent = `R$ ${ totalEtapaFormatadoComBDI }`;
+                trEtapa.querySelector('.totalEtapa').textContent = `R$ ${totalEtapaFormatadoComBDI}`;
                 totalOrcamento += totalEtapa;
                 // Preencher TOTAL do orçamento
                 let totalOrcamentoFormatado = totalOrcamento.toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                document.querySelector('#totalSemBdi').textContent = `R$ ${ totalOrcamentoFormatado }`;
+                document.querySelector('#totalSemBdi').textContent = `R$ ${totalOrcamentoFormatado}`;
 
                 let totalOrcamentoComBdi = totalOrcamento * (1 + window.orcamento.bdi / 100);
                 let totalOrcamentoFormatadoComBDI = totalOrcamentoComBdi.toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                document.querySelector('#totalOrcamento').textContent = `R$ ${  (totalOrcamentoFormatadoComBDI) }`;
+                document.querySelector('#totalOrcamento').textContent = `R$ ${(totalOrcamentoFormatadoComBDI)}`;
 
                 let totalBdi = totalOrcamento * window.orcamento.bdi / 100;
                 let totalBdiFormatado = totalBdi.toLocaleString('pt-br', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                document.querySelector('#totalBdi').textContent = `R$ ${ totalBdiFormatado }`;
+                document.querySelector('#totalBdi').textContent = `R$ ${totalBdiFormatado}`;
 
                 let orderedItems = [];
 
@@ -539,11 +546,11 @@ const listarEtapas = () => {
 
                   trItem.innerHTML = /*html*/`
                   <tr from-section="${etapa.id}">
-                    <th>
+                    <th class="noprint">
                       <!-- <i class="fa fa-caret-down"></i> -->
                     </th>
                     
-                    <td> 
+                    <td class="noprint"> 
                       <div class="w3-dropdown-hover w3-container" style="background: none;">
                         <i class="fa fa-bars"></i>
                         <div class="w3-dropdown-content w3-bar-block w3-round w3-padding">
@@ -555,7 +562,7 @@ const listarEtapas = () => {
                       </div>
                     </td>
                     
-                    <td> ${item?.tipo == "I" ?
+                    <td class="noprint"> ${item?.tipo == "I" ?
                       `<i class="fa fa-cube"></i> ` :
                       `<i class="fa fa-cubes"></i> `
                     } </td>
@@ -564,9 +571,9 @@ const listarEtapas = () => {
                     <td> ${item?.descricao} </td>
                     <td> ${item?.unidade} </td>
                     <td> ${item?.quantidade} </td>
-                    <td> ${item?.valor} </td>
-                    <td> ${(item?.valor * (1 + window.orcamento.bdi / 100)).toFixed(2)} </td>
-                    <td> R$ ${ totalItemFormatado } </td>
+                    <td class="nowrap"> R$ ${item?.valor} </td>
+                    <td class="nowrap"> R$ ${(item?.valor * (1 + window.orcamento.bdi / 100)).toFixed(2)} </td>
+                    <td class="nowrap"> R$ ${totalItemFormatado} </td>
                       
                   </tr>
                 `;
@@ -635,8 +642,8 @@ const listarEtapas = () => {
                 })
             }
 
-          }) 
-          
+          })
+
           trEtapa.querySelector('.editar-etapa').addEventListener('click', () => {
             const modalEditarEtapa = new Modal("body", "Editar etapa", /*html*/`
                 <div>
@@ -686,6 +693,67 @@ const listarEtapas = () => {
       }
     })
 }
-
-
 listarEtapas()
+
+
+
+
+// Exportar para pdf (com comando de imprimir)
+document.querySelector('#exportarPdf').addEventListener('click', async () => {
+  // printar apenas a tabela
+  let janelaImpressao = window.open('', '_self');  
+
+  let html = "";
+
+
+  let style = document.querySelector('main style').outerHTML;
+  let cabecalho = document.querySelector('#cabecalhoOrcamento').outerHTML;
+  let orcamento = document.querySelector('#orcamento').outerHTML;
+  let relatorio = document.querySelector('#relatorio').outerHTML;
+
+  let noprintstyle = /*css*/`
+    .noprint {
+      display: none;
+    }
+    .naoquebrar {
+      page-break-inside: avoid;
+    }
+  `
+
+  html = /*html*/`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>PontoCivil</title>
+      <link rel="stylesheet" href="/App/App.css">
+      <link rel="stylesheet" href="/index/index.css">
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <style type="text/css" id="operaUserStyle"></style><style type="text/css"></style>
+      ${style}
+      <style>
+        ${noprintstyle}
+      </style>
+    </head>
+
+    <body>
+
+      ${cabecalho}
+      ${orcamento}
+      ${relatorio}
+      
+    </body>
+    </html>
+  `;
+
+  janelaImpressao.document.write(html);
+  // esperar até o html ser totalmente carregado para depois imprimir
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  janelaImpressao.print();
+
+  window.location.reload();
+
+})
