@@ -38,7 +38,6 @@ class Modal extends _Component {
 
             .modal .box .header {
                 z-index: 99;
-                background: #ffffff;
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
@@ -76,7 +75,6 @@ class Modal extends _Component {
 
             .modal .box .footer {
                 z-index: 99;
-                background: #ffffff;
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
