@@ -13,7 +13,7 @@
 
     --dark-color-1: hsl(var(--hue), 100%, 20%);
     --dark-color-2: hsl(var(--hue), 100%, 15%);
-    --dark-color-3: hsl(var(--hue), 100%, 10%);
+    --dark-color-3: hsl(var(--hue), 100%, 5%);
 
     --light-color-1: hsl(var(--hue), 100%, 80%);
     --light-color-2: hsl(var(--hue), 100%, 85%);
@@ -131,12 +131,15 @@ nav {
 
     background: var(--primary-color);
     color: white;
+    min-width: 0px;
     width: 0px;
     transition: .3s ease-in-out;
 }
 nav.active {
-    width: 18rem;
+    width: 200px;
+    min-width: 200px;
 }
+
 
 nav .nav-item {
     padding: 10px;

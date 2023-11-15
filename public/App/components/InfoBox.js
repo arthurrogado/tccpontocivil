@@ -99,7 +99,7 @@ class infoBox {
 
             .area-infos {
                 position: fixed;
-                top: 10px;
+                top: 70px;
                 right: 10px;
                 display: flex;
                 flex-direction: column;

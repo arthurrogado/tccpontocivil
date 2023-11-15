@@ -24,8 +24,23 @@ document.querySelector('#controlSidebar').addEventListener('click', () => {
     document.querySelector('nav').classList.toggle('active')
 })
 
+// Se a tela for menor que 768px, o sidebar é fechado
+const verificarTamanhoTela = async () => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    if(window.innerWidth < 768) {
+        document.querySelector('nav').classList.remove('active');
+    } else {
+        document.querySelector('nav').classList.add('active');
+    }
+
+}
+window.addEventListener('resize', async () => {
+    await verificarTamanhoTela()
+})
+
 
 // EXECUÇÃO
 
 atualizarSidebar();
 atualizarInformacoesUsuario();
+verificarTamanhoTela();
