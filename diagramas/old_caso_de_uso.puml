@@ -1,0 +1,29 @@
+@startuml Casos de uso
+left to right direction
+
+:Usuário: as User
+:SINAPI: as Sinapi
+
+rectangle "Sistema" {
+    User -- (Criar Orçamento)
+        (Criar Orçamento) ..> ( Configurar funcionamento ) : <<include>>
+
+    User -- (Editar Orçamento)
+        (Editar Orçamento) ..> (Criar Orçamento) : <<include>>
+
+    User -- (Adicionar etapas)
+        (Adicionar etapas) ..> (EE) : <<include>>
+    User -- (Editar etapas) as (EE)
+
+    User -- (Adicionar insumos / composições)
+
+    User -- (Consultar relatório parcial (por etapa)) ..> (Consultar relatório total) : <<include>>
+    User -- (Consultar relatório total)
+
+    Sinapi -up- (Fornecer Preços)
+        (Fornecer Preços) .. (Adicionar Etapas)
+
+}
+
+
+@enduml

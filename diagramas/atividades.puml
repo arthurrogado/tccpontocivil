@@ -1,0 +1,47 @@
+@startuml
+
+start
+
+:login;
+
+fork
+    :Criar orçamento;
+fork again
+
+    repeat 
+        :Buscar orçamento;
+    repeat while (Orçamento encontrado?) is (não)
+    ->(sim);
+
+end merge
+
+
+fork
+    :Visualizar orçamento;
+fork again
+    :Excluir orçamento;
+    end
+end merge
+
+
+fork
+    :Editar orçamento;
+fork again
+    :Adicionar etapas;
+
+fork again
+    :Adicionar itens;
+
+    repeat
+        :Buscar na base de dados;
+    repeat while (Item encontrado?) is (não)
+    ->sim;
+
+end merge
+
+
+:Exportar orçamento em pdf;
+
+stop
+
+@enduml

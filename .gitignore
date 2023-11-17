@@ -1,1 +1,3 @@
 Config.php
+venv/
+__pycache__/

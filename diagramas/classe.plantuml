@@ -1,0 +1,93 @@
+@startuml de Classe
+
+
+class Orçamento {
+  - id: int
+  - nome: String
+  - descricao: String
+  - criado_em: Datetime
+  - estado_referencia: String
+  - mes_referencia: Date
+  - bdi: double
+  - desonerado: bool
+  - id_escritorio: int
+
+  + listar(id_escritorio): List<Orçamento>
+  + criar(): Orçamento
+  + editar(): bool
+  + excluir(): bool
+  + visualizar(): Orçamento
+  + listarItens(): List<Item>
+  + pesquisa(): List<Orçamento>
+  + pesquisarComposição(): List<Item>
+  + pesquisarInsumo(): List<Item>
+
+}
+
+class Etapa {
+  - id: int
+  - descricao: String
+  - id_orcamento: int
+  - id_proxima_etapa: int
+
+  + listar(): List<Etapa>
+  + criar(): Etapa
+  + excluir(): bool
+  + editar(): bool
+}
+
+abstract class Item {
+  - id: int
+  - codigo: int
+  - quantidade: double
+  - tipo: char
+  - id_etapa: int
+  - id_proximo_item: int
+
+  + listar(): List<Item>
+  + criar(): Item
+  + excluir(): bool
+}
+
+class detalhes_composicao_insumo {
+  - id: int
+  - codigo: int
+  - descricao: String
+  - unidade: String
+  - estado_referencia: String
+  - mes_referencia: Date
+  - desonerado: bool
+  - precoUnitario: double
+}
+
+
+
+class Usuario {
+  - nome: String
+  - usuario: String
+  - senha: String
+  - categoria: String
+  - cpf: String
+  - telefone: String
+  - id_escritorio: int
+  - arquivado: bool
+
+  + login(): bool
+  + logout(): bool
+  + criar(): Usuario
+  + editar(): bool
+  + excluir(): bool
+  + listar(): List<Usuario>
+}
+
+
+
+Orçamento "1" -- "0..*" Usuario : criado por
+Orçamento "1  " -- "0..*" Etapa : possui
+
+Etapa "1" -- "0..*" Item : contém
+
+Item "1" - "1" detalhes_composicao_insumo : detalha em
+
+@enduml
+

@@ -1,0 +1,70 @@
+@startuml Diagrama de Classe
+
+class Orcamento {
+    -nome: String
+    -valorTotal: double
+    -etapas: List<Etapa>
+    -dataCriacao: Date
+    +adicionarEtapa(etapa: Etapa): void
+}
+
+class Etapa {
+    -nome: String
+    -valorTotal: double
+    -itens: List<Item>
+    +adicionarItem(item: Item): void
+}
+
+abstract class Item {
+    -codigo: String
+    -banco: Banco
+    -unidade: String
+    -quantidade: double
+    -precoUnitario: double
+    -bdi: double
+    +getPrecoUnitario(): double
+    +getPrecoUnitarioComBDI(): double
+    +getPrecoTotal(): double
+    +getPrecoTotalComBDI(): double
+}
+
+class Composicao {
+    -itens: List<Item>
+}
+
+class Insumo {
+    -tipo: String
+    -precoBase: double
+}
+
+class Banco {
+    -nome: String
+    -composicoes: List<Composicao>
+    -insumos: List<Insumo>
+    -estado: String
+    +getComposicoes(): List<Composicao>
+    +getInsumos(): List<Insumo>
+}
+
+class Usuario {
+  - nome: String
+  - login: String
+  - senha: String
+  - perfil: String
+  + criarOrçamento(): Orçamento
+  + consultarOrçamentos(): List<Orçamento>
+}
+
+Orcamento "1..*" -- "1" Usuario : cria/consulta
+
+Orcamento "1" *-- "0..*" Etapa : possui
+
+Etapa "1" *-- "0..*" Item : possui
+
+Item <|-- Composicao
+
+Item <|-- Insumo
+
+Item ..> Banco : depende de
+
+@enduml

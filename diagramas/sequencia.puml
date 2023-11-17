@@ -1,0 +1,66 @@
+@startuml Diagrama de Sequência
+
+actor Usuario
+boundary Interface
+control Controlador
+entity Banco
+
+activate Usuario
+Usuario -> Interface : Solicita criar orçamento
+activate Interface
+Interface -> Controlador : criaOrçamento()
+activate Controlador
+Controlador -> Banco : Salvar orçamento criado
+activate Banco
+return Confirmação de salvamento
+Controlador --> Interface : Exibe orçamento criado
+deactivate Controlador
+Interface --> Usuario : Mostra orçamento criado
+deactivate Interface
+
+Usuario -> Interface : Solicita adicionar etapa ao orçamento
+activate Interface
+Interface -> Controlador : adicionarEtapa(etapa: Etapa)
+activate Controlador
+Controlador --> Interface : Exibe etapa adicionada ao orçamento
+deactivate Controlador
+Interface --> Usuario : Mostra etapa adicionada ao orçamento
+deactivate Interface
+
+loop Adicionar mais etapas
+    Usuario -> Interface : Solicita adicionar nova etapa ao orçamento
+    activate Interface
+    Interface -> Controlador : adicionarEtapa(etapa: Etapa)
+    activate Controlador
+    Controlador --> Interface : Exibe etapa adicionada ao orçamento
+    deactivate Controlador
+    Interface --> Usuario : Mostra etapa adicionada ao orçamento
+    deactivate Interface
+end
+
+loop Adicionar mais itens à etapa
+    Usuario -> Interface : Solicita adicionar novo item à etapa do orçamento
+    activate Interface
+    Interface -> Controlador : adicionarItem(item: Item)
+    activate Controlador
+    Controlador -> Banco : Consulta preço unitário do item
+        activate Banco
+        return Preço unitário do item
+    deactivate Banco
+        Controlador -> Controlador : calcula preço total do item
+        activate Controlador
+        deactivate Controlador
+
+    Controlador -> Banco : Salvar item adicionado ao banco
+        activate Banco
+        return Confirmação de salvamento
+
+    Controlador --> Interface : Exibe item adicionado à etapa do orçamento
+    deactivate Controlador
+    Interface --> Usuario : Mostra item adicionado à etapa do orçamento
+    deactivate Interface
+end
+
+deactivate Usuario
+
+@enduml

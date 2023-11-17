@@ -7,34 +7,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE TABLE IF NOT EXISTS `colaboradores` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
-  `cpf` varchar(11) DEFAULT NULL,
-  `telefone` varchar(20) DEFAULT NULL,
-  `endereco` varchar(100) DEFAULT NULL,
-  `valor_diaria` int(11) DEFAULT 10000 COMMENT 'em centavos',
-  `funcao` varchar(100) DEFAULT NULL,
-  `observacoes` varchar(100) DEFAULT NULL,
-  `id_escritorio` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cpf` (`cpf`),
-  KEY `FK_colaboradores_escritorios` (`id_escritorio`),
-  CONSTRAINT `FK_colaboradores_escritorios` FOREIGN KEY (`id_escritorio`) REFERENCES `escritorios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-CREATE TABLE IF NOT EXISTS `colaboradores_obras` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_colaborador` int(11) NOT NULL DEFAULT 0,
-  `id_obra` int(11) NOT NULL DEFAULT 0,
-  `arquivado` tinyint(1) DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `FK__colaboradores` (`id_colaborador`),
-  KEY `FK__obras` (`id_obra`),
-  CONSTRAINT `FK__colaboradores` FOREIGN KEY (`id_colaborador`) REFERENCES `colaboradores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK__obras` FOREIGN KEY (`id_obra`) REFERENCES `obras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
 CREATE TABLE IF NOT EXISTS `composicoes_insumos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codigo` int(11) NOT NULL,
@@ -43,19 +15,7 @@ CREATE TABLE IF NOT EXISTS `composicoes_insumos` (
   `tipo` enum('C','I') NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `codigo` (`codigo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7554 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
-
-CREATE TABLE IF NOT EXISTS `custos_adicionais` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(50) NOT NULL,
-  `descricao` varchar(255) NOT NULL,
-  `valor` double NOT NULL DEFAULT 0,
-  `data` date NOT NULL,
-  `id_obra` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_custos_adicionais_obras` (`id_obra`),
-  CONSTRAINT `FK_custos_adicionais_obras` FOREIGN KEY (`id_obra`) REFERENCES `obras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54581 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE IF NOT EXISTS `detalhes_composicoes_insumos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -67,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `detalhes_composicoes_insumos` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `FK_detalhes_composicoes_composicoes` (`codigo`) USING BTREE,
   CONSTRAINT `FK_detalhes_composicoes_insumos_composicoes_insumos` FOREIGN KEY (`codigo`) REFERENCES `composicoes_insumos` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7554 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=24975 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE IF NOT EXISTS `escritorios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -78,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `escritorios` (
   `observacoes` varchar(255) DEFAULT NULL,
   `deletado` tinyint(4) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `etapas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -90,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `etapas` (
   KEY `FK_etapas_orcamentos` (`id_orcamento`),
   CONSTRAINT `FK_etapas_etapas` FOREIGN KEY (`id_proxima_etapa`) REFERENCES `etapas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_etapas_orcamentos` FOREIGN KEY (`id_orcamento`) REFERENCES `orcamentos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `itens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -106,17 +66,7 @@ CREATE TABLE IF NOT EXISTS `itens` (
   CONSTRAINT `FK_itens_composicoes_insumos` FOREIGN KEY (`codigo`) REFERENCES `composicoes_insumos` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_itens_etapas` FOREIGN KEY (`id_etapa`) REFERENCES `etapas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `FK_itens_itens` FOREIGN KEY (`id_proximo_item`) REFERENCES `itens` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-CREATE TABLE IF NOT EXISTS `obras` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(50) NOT NULL DEFAULT '',
-  `descricao` varchar(255) NOT NULL DEFAULT '',
-  `id_escritorio` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_obras_escritorios` (`id_escritorio`),
-  CONSTRAINT `FK_obras_escritorios` FOREIGN KEY (`id_escritorio`) REFERENCES `escritorios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `orcamentos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -132,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `orcamentos` (
   PRIMARY KEY (`id`),
   KEY `FK_orcamentos_escritorios` (`id_escritorio`),
   CONSTRAINT `FK_orcamentos_escritorios` FOREIGN KEY (`id_escritorio`) REFERENCES `escritorios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `pastas_orcamentos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -142,21 +92,6 @@ CREATE TABLE IF NOT EXISTS `pastas_orcamentos` (
   `id_escritorio` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-CREATE TABLE IF NOT EXISTS `pontos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_colaborador` int(11) NOT NULL,
-  `id_obra` int(11) NOT NULL,
-  `data` date NOT NULL,
-  `matutino` tinyint(1) NOT NULL,
-  `vespertino` tinyint(1) NOT NULL,
-  `valor_diaria` double NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_pontos_colaboradores` (`id_colaborador`),
-  KEY `FK_pontos_obras` (`id_obra`),
-  CONSTRAINT `FK_pontos_colaboradores` FOREIGN KEY (`id_colaborador`) REFERENCES `colaboradores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_pontos_obras` FOREIGN KEY (`id_obra`) REFERENCES `obras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -172,10 +107,17 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   UNIQUE KEY `usuario` (`usuario`),
   KEY `FK_usuarios_escritorio` (`id_escritorio`),
   CONSTRAINT `FK_usuarios_escritorio` FOREIGN KEY (`id_escritorio`) REFERENCES `escritorios` (`id`) ON DELETE NO ACTION ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+
+
+-- Dados básicos para o usuário MASTER
+
+INSERT INTO `escritorios` (`id`, `nome`, `cnpj`, `telefone`, `endereco`, `observacoes`, `deletado`) VALUES (1, '[TESTE ADM]', '123', NULL, NULL, NULL, 0);
+
+INSERT INTO `usuarios` (`id`, `nome`, `usuario`, `senha`, `categoria`, `cpf`, `telefone`, `id_escritorio`, `arquivado`) VALUES (1, 'ADM - MASTER', 'master', '$10$pDX6RrSXplDkLAo/x/2dyevhtaPksO56xgiJyHkeC2Ybkwe/BIq9q', 'ADM', NULL, NULL, 1, 0);
