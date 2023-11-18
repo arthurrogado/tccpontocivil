@@ -38,6 +38,8 @@ function atualizarSidebar(){
 
         if(response.ok){ // LOGADO
             let usuario = response.usuario
+            document.querySelector('nav').classList.add('active')
+            document.querySelector('nav').classList.remove('hidden')
 
             if(usuario.id == 1){ // ADMIN
                 popularMenuItems([
@@ -62,7 +64,10 @@ function atualizarSidebar(){
         }
 
         else { // NÃO LOGADO
-            
+            // Esconder sidebar
+            let sidebar = document.querySelector('#content nav')
+            sidebar.innerHTML = ''
+            sidebar.classList.remove('active')
         }
 
     })

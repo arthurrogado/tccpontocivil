@@ -14,4 +14,47 @@
     border-radius: 10px;
     padding: 2rem;
 }
- */
+*/
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    max-width: 50rem;
+    max-height: 100%;
+}
+
+.form_login {
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    padding: .5rem 0;
+    min-width: 50%;
+    margin: 1rem 0;
+    height: fit-content;
+}
+
+.introducao img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.cartaovisita {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+@media (min-width: 768px) {
+    .cartaovisita {
+        display: flex;
+        flex-direction: row;
+    }
+    .form_login{
+        margin-left: 1rem;
+    }
+}

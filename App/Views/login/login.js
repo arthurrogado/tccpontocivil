@@ -4,7 +4,10 @@ const httpClient = new HttpClient()
 import atualizarSidebar from "/App/Utils/atualizarSidebar.js"
 import atualizarInformacoesUsuario from "/App/Utils/atualizarInformacoesUsuario.js"
 
-const form = document.querySelector('.formLogin')
+atualizarSidebar()
+document.querySelector('nav').classList.add('hidden')
+
+const form = document.querySelector('.form_login')
 form.addEventListener('submit', async (e) => {
     e.preventDefault()
     const formdata = new FormData(form)
@@ -15,6 +18,7 @@ form.addEventListener('submit', async (e) => {
             httpClient.navigateTo('/home')
             atualizarSidebar()
             atualizarInformacoesUsuario()
+            document.querySelector('nav').classList.remove('hidden')
         }
     })
 

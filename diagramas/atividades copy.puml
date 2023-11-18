@@ -1,0 +1,18 @@
+@startuml
+
+start
+
+:login;
+
+fork
+    :Criar orçamento;
+fork again
+
+    repeat :Buscar orçamento;
+    repeat while (Orçamento encontrado?) is (não)
+    ->(sim);
+end merge
+
+stop
+
+@enduml

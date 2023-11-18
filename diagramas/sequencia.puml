@@ -18,6 +18,8 @@ deactivate Controlador
 Interface --> Usuario : Mostra orçamento criado
 deactivate Interface
 
+' Loop para buscar o orçamento, podendo visualizar ou excluir
+
 Usuario -> Interface : Solicita adicionar etapa ao orçamento
 activate Interface
 Interface -> Controlador : adicionarEtapa(etapa: Etapa)
