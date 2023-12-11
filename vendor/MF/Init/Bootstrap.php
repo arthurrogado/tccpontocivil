@@ -98,7 +98,7 @@ abstract class Bootstrap {
         // return parse_url($_SERVER['PATH_INFO'], PHP_URL_PATH);
         
         $request_url = $_SERVER['REQUEST_URI'];
-        // Remover o primeiro "/api" da url
+        // Remover o primeiro "/api" da url, usado apenas para referência
         $request_url = substr($request_url, 4);
         return parse_url( $request_url , PHP_URL_PATH);
     }
