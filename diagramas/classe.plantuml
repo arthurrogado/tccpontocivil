@@ -1,7 +1,20 @@
 @startuml de Classe
 
+abstract class Model {
+  # db: PDO
+  {static} # conn: PDO
 
-class Orçamento {
+  + __construct()
+  {static} + getConn(): PDO
+
+  {static} + insert(String table, Array columns, Array values): Array
+  {static} + select(String table, Array columns, String where): Array
+  {static} + selectOne(String table, Array columns, String where): Array
+  {static} + update(String table, Array columns, Array values, String where): Array
+  {static} + delete(String table, String where): Array
+}
+
+class Orçamento extends Model {
   - id: int
   - nome: String
   - descricao: String
@@ -24,7 +37,7 @@ class Orçamento {
 
 }
 
-class Etapa {
+class Etapa extends Model {
   - id: int
   - descricao: String
   - id_orcamento: int
@@ -36,7 +49,7 @@ class Etapa {
   + editar(): bool
 }
 
-abstract class Item {
+class Item extends Model {
   - id: int
   - codigo: int
   - quantidade: double
@@ -44,25 +57,30 @@ abstract class Item {
   - id_etapa: int
   - id_proximo_item: int
 
-  + listar(): List<Item>
-  + criar(): Item
-  + excluir(): bool
-}
-
-class detalhes_composicao_insumo {
-  - id: int
-  - codigo: int
   - descricao: String
   - unidade: String
   - estado_referencia: String
   - mes_referencia: Date
   - desonerado: bool
-  - precoUnitario: double
+  - preco_unitario: double
+
+  + listar(): List<Item>
+  + criar(): Item
+  + excluir(): bool
 }
 
+' class detalhes_composicao_insumo extends Model {
+'   - id: int
+'   - codigo: int
+'   - descricao: String
+'   - unidade: String
+'   - estado_referencia: String
+'   - mes_referencia: Date
+'   - desonerado: bool
+'   - preco_unitario: double
+' }
 
-
-class Usuario {
+class Usuario extends Model {
   - nome: String
   - usuario: String
   - senha: String
@@ -80,14 +98,25 @@ class Usuario {
   + listar(): List<Usuario>
 }
 
+class Escritorio extends Model {
+  - id: int
+  - nome: String
+  - cnpj: String
+  - telefone: String
+  - endereco: String
+  - observacoes: String
+  - deletado: bool
+}
 
 
-Orçamento "1" -- "0..*" Usuario : criado por
+Orçamento "1" -- "0..* " Usuario : criado por
 Orçamento "1  " -- "0..*" Etapa : possui
+Orçamento "0..*" -- "1  " Escritorio : pertence a
 
-Etapa "1" -- "0..*" Item : contém
 
-Item "1" - "1" detalhes_composicao_insumo : detalha em
+Etapa "1 " -- "0..*" Item : contém
+
+' Item "1" - "1" detalhes_composicao_insumo : detalha em
 
 @enduml
 
